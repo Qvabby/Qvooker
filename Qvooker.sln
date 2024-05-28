@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qvooker.Server", "Qvooker.Server\Qvooker.Server.csproj", "{45CE851E-CB09-4C4B-9833-7CFCF68617BC}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "qvooker.client", "qvooker.client\qvooker.client.esproj", "{9439D695-4605-4E40-87FD-DFCD0882488F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{45CE851E-CB09-4C4B-9833-7CFCF68617BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45CE851E-CB09-4C4B-9833-7CFCF68617BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45CE851E-CB09-4C4B-9833-7CFCF68617BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45CE851E-CB09-4C4B-9833-7CFCF68617BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9439D695-4605-4E40-87FD-DFCD0882488F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9439D695-4605-4E40-87FD-DFCD0882488F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9439D695-4605-4E40-87FD-DFCD0882488F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{9439D695-4605-4E40-87FD-DFCD0882488F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9439D695-4605-4E40-87FD-DFCD0882488F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9439D695-4605-4E40-87FD-DFCD0882488F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DE7420B9-BC99-42A7-920A-8C043F9EE54D}
+	EndGlobalSection
+EndGlobal

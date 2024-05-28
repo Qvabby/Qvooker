@@ -1,0 +1,6 @@
+@Qvooker.Server_HostAddress = http://localhost:5031
+
+GET {{Qvooker.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
