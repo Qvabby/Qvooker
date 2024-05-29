@@ -10,12 +10,13 @@ namespace Qvooker.Server.Data
         {
 
         }
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-            
-        //}
+        //Adding HotelsTb
         public DbSet<Hotel> Hotels { get; set; }
+        //Adding AdressesTb
         public DbSet<Adress> Adresses { get; set; }
+        //Adding RoomsTb
         public DbSet<Room> Rooms { get; set; }
+        //Adding UsersTb
+        public DbSet<QvookerUser> qvookerUsers { get; set; }
     }
 }

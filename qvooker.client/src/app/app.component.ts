@@ -43,39 +43,15 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.getForecasts();
     this.getHotels();
   }
 
-
-  //getHotels() {
-  //  var url = 'localhost:7071/Hotel'
-  //  this.http.get<Hotel[]>(url).subscribe(
-  //    (result) => {
-  //      console.log(result);
-  //      this.hotels = result;
-  //    },(error) => {
-  //      console.error(error);
-  //    }
-  //  );
-  //}
 
   getHotels() {
     this.http.get<Hotel[]>('https://localhost:7071/Hotel').subscribe(
       (result) => {
         this.hotels = result;
         console.log(result);
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-  }
-
-  getForecasts() {
-    this.http.get<WeatherForecast[]>('/weatherforecast').subscribe(
-      (result) => {
-        this.forecasts = result;
       },
       (error) => {
         console.error(error);

@@ -46,7 +46,6 @@ namespace Qvooker.Server.Controllers
         }
 
         // PUT: api/Hotel/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutHotel(int id, Hotel hotel)
         {
@@ -77,7 +76,6 @@ namespace Qvooker.Server.Controllers
         }
 
         // POST: api/Hotel
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Hotel>> PostHotel(HotelDTO hotel)
         {
