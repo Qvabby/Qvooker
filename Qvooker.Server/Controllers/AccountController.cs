@@ -16,9 +16,12 @@ namespace Qvooker.Server.Controllers
         {
             _accountService = accountService;
         }
+        [HttpPost]
+        [Route("account/register")]
         public async Task<ActionResult<ServiceResponse<IdentityResult>>> RegisterUser(UserRegisterDTO model)
         {
-            if (ModelState.IsValid) {
+            if (ModelState.IsValid)
+            {
                 //get result from account service register.
                 var serviceResponse = await _accountService.Register(model);
                 if (serviceResponse.ServiceSuccess)
@@ -33,6 +36,6 @@ namespace Qvooker.Server.Controllers
             return BadRequest(new { success = false, message = "Invalid data" });
         }
 
-        }
     }
 }
+
