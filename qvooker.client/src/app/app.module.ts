@@ -5,13 +5,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule, ButtonsModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

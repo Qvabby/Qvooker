@@ -15,9 +15,10 @@ namespace Qvooker.Server
 
 
             builder.Services.AddDbContext<QvookerDbContext>(opt =>
-            opt.UseSqlServer(builder.Configuration.GetConnectionString("DevelopmentConnection"))
-            
-            ) ;
+
+                opt.UseSqlServer(builder.Configuration.GetConnectionString("DevelopmentConnection"))
+
+            );
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -41,7 +42,7 @@ namespace Qvooker.Server
                  AllowAnyHeader());
             });
 
-            
+
 
 
             var app = builder.Build();
