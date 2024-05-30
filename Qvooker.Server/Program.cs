@@ -112,6 +112,20 @@ namespace Qvooker.Server
             });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             var app = builder.Build();
 
             app.UseCors("AllowOrigin");

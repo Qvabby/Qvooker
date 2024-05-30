@@ -1,5 +1,7 @@
 ﻿using Azure;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Qvooker.Server.Data;
 using Qvooker.Server.Interfaces;
 using Qvooker.Server.Models;
 using Qvooker.Server.Models.DTOs;
@@ -11,10 +13,12 @@ namespace Qvooker.Server.Services
         //Using Dependency injection.
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        public AccountService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        private readonly QvookerDbContext _qvookerDbContext;
+        public AccountService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, QvookerDbContext qvookerDbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _qvookerDbContext = qvookerDbContext;
         }
 
         /// <summary>
@@ -22,17 +26,77 @@ namespace Qvooker.Server.Services
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public Task<ServiceResponse<SignInResult>> Login(UserLoginDTO model)
+        public async Task<ServiceResponse<SignInResult>> Login(UserLoginDTO model)
         {
-            throw new NotImplementedException();
+            //Creating Service Response.
+            var Response = new ServiceResponse<SignInResult>();
+            //Try Catch for handling.
+            Response.Description = "Service is to Log in user.";
+            try
+            {
+
+                //trying to sign in
+                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, isPersistent: false, true);
+                Response.Data = result;
+
+
+                //checks result.
+                if (result.Succeeded) 
+                { 
+                    Response.ServiceSuccess = true;
+                    Response.Description = "User signed in";
+                    return Response; 
+                }
+
+                //In case I add TwoFactorAuth...
+                //if (result.RequiresTwoFactor) { }
+
+                //if account is locked out
+                if (result.IsLockedOut)
+                {
+                    //get user
+                    var user = _qvookerDbContext.qvookerUsers.FirstOrDefault(u => u.UserName == model.Username);
+                    //get time
+                    var time = user.LockoutEnd - DateTime.UtcNow;
+                    var Seconds = time.Value.Seconds;
+                    var Minutes = time.Value.Minutes;
+                    //display how much time left.
+                    string ErrorMessage = $"Hello {user.Name}, Your Account is Locked for {Minutes} Minutes {Seconds} seconds.";
+
+                    Response.Description = "User is on LockOut";
+                    Response.essentialData = ErrorMessage;
+                }
+
+                //since we don't have every case just returning Response.
+                return Response;
+
+            }
+            catch (Exception e)
+            {
+                Response.errorMessage = e.Message;
+                return Response;
+            }
         }
         /// <summary>
         /// Functionality of Logging Out.
         /// </summary>
         /// <returns></returns>
-        public Task<ServiceResponse<string>> Logout()
+        public async Task<ServiceResponse<string>> Logout()
         {
-            throw new NotImplementedException();
+            //creating Service response for LoggingOut.
+            var Response = new ServiceResponse<string>();
+            try
+            {
+                await _signInManager.SignOutAsync();
+                Response.ServiceSuccess = true;
+                Response.Data = "user successfully logged out.";
+            }
+            catch (Exception e)
+            {
+                Response.errorMessage = e.Message;
+                return Response;
+            }
+            return Response;
         }
         /// <summary>
         /// Functionality of Registering user.

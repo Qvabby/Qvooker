@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Qvooker.Server.Models;
 using System.Reflection.Metadata;
 
 namespace Qvooker.Server.Data
 {
-    public class QvookerDbContext : DbContext
+    public class QvookerDbContext : IdentityDbContext<IdentityUser>
     {
         public QvookerDbContext(DbContextOptions options) : base(options)
         {

@@ -17,7 +17,7 @@ namespace Qvooker.Server.Controllers
             _accountService = accountService;
         }
         [HttpPost]
-        [Route("account/register")]
+        [Route("/register")]
         public async Task<ActionResult<ServiceResponse<IdentityResult>>> RegisterUser(UserRegisterDTO model)
         {
             if (ModelState.IsValid)
@@ -36,6 +36,42 @@ namespace Qvooker.Server.Controllers
             return BadRequest(new { success = false, message = "Invalid data" });
         }
 
+        [HttpPost]
+        [Route("/login")]
+        public async Task<ActionResult<ServiceResponse<Microsoft.AspNetCore.Identity.SignInResult>>> LoginUser(UserLoginDTO model)
+        {
+            if (ModelState.IsValid)
+            {
+                //get result from account service login.
+                var serviceResponse = await _accountService.Login(model);
+                if (serviceResponse.ServiceSuccess)
+                {
+                    return Ok(new { success = serviceResponse.ServiceSuccess, message = serviceResponse.Description, errorMessage = serviceResponse.errorMessage, essentialData = serviceResponse.essentialData});
+                }
+                else
+                {
+                    return BadRequest(new { success = serviceResponse.ServiceSuccess, message = serviceResponse.Description, errorMessage = serviceResponse.errorMessage, essentialData = serviceResponse.essentialData });
+                }
+            }
+            return BadRequest(new { success = false, message = "Invalid Data." });
+        }
+
+        [HttpPost]
+        [Route("/logout")]
+        public async Task<ActionResult<ServiceResponse<string>>> LogoutUser()
+        {
+            var serviceResponse = await _accountService.Logout();
+            if (serviceResponse.ServiceSuccess)
+            {
+                //return Ok(new { success = true, error = serviceResponse.errorMessage, data = serviceResponse.Data });
+                return Ok(new { success = serviceResponse.ServiceSuccess, message = serviceResponse.Description, errorMessage = serviceResponse.errorMessage, essentialData = serviceResponse.essentialData });
+            }
+            else
+            {
+                return BadRequest(new { success = serviceResponse.ServiceSuccess, message = serviceResponse.Description, errorMessage = serviceResponse.errorMessage, essentialData = serviceResponse.essentialData});
+            }
+
+        }
     }
 }
 

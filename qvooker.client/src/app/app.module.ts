@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { FormsModule } from '@angular/forms';
 
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { RegisterComponent } from './register/register.component';
@@ -14,8 +15,11 @@ import { RegisterComponent } from './register/register.component';
     RegisterComponent,
   ],
   imports: [
-    BrowserModule, HttpClientModule,
-    AppRoutingModule, ButtonsModule.forRoot()
+    BrowserModule,
+    HttpClientModule,
+    AppRoutingModule,
+    ButtonsModule.forRoot(),
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
