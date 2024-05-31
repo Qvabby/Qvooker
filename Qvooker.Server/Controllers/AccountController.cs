@@ -46,11 +46,11 @@ namespace Qvooker.Server.Controllers
                 var serviceResponse = await _accountService.Login(model);
                 if (serviceResponse.ServiceSuccess)
                 {
-                    return Ok(new { success = serviceResponse.ServiceSuccess, message = serviceResponse.Description, errorMessage = serviceResponse.errorMessage, essentialData = serviceResponse.essentialData});
+                    return Ok(serviceResponse);
                 }
                 else
                 {
-                    return BadRequest(new { success = serviceResponse.ServiceSuccess, message = serviceResponse.Description, errorMessage = serviceResponse.errorMessage, essentialData = serviceResponse.essentialData });
+                    return Unauthorized(new { success = serviceResponse.ServiceSuccess, message = serviceResponse.Description, errorMessage = serviceResponse.errorMessage, essentialData = serviceResponse.essentialData });
                 }
             }
             return BadRequest(new { success = false, message = "Invalid Data." });

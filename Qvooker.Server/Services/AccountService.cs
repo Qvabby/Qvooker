@@ -1,10 +1,14 @@
 ﻿using Azure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Qvooker.Server.Data;
 using Qvooker.Server.Interfaces;
 using Qvooker.Server.Models;
 using Qvooker.Server.Models.DTOs;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Qvooker.Server.Services
 {
@@ -14,11 +18,13 @@ namespace Qvooker.Server.Services
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly QvookerDbContext _qvookerDbContext;
-        public AccountService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, QvookerDbContext qvookerDbContext)
+        private readonly IConfiguration _configuration;
+        public AccountService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, QvookerDbContext qvookerDbContext, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _qvookerDbContext = qvookerDbContext;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -26,10 +32,10 @@ namespace Qvooker.Server.Services
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<ServiceResponse<SignInResult>> Login(UserLoginDTO model)
+        public async Task<ServiceResponse<string>> Login(UserLoginDTO model)
         {
             //Creating Service Response.
-            var Response = new ServiceResponse<SignInResult>();
+            var Response = new ServiceResponse<string>();
             //Try Catch for handling.
             Response.Description = "Service is to Log in user.";
             try
@@ -37,12 +43,15 @@ namespace Qvooker.Server.Services
 
                 //trying to sign in
                 var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, isPersistent: false, true);
-                Response.Data = result;
+                Response.ServiceSuccess = result.Succeeded;
 
 
                 //checks result.
                 if (result.Succeeded) 
-                { 
+                {
+                    var user = await _userManager.FindByNameAsync(model.Username);
+                    var token = GenerateJwtToken(user);
+                    Response.Data = token;
                     Response.ServiceSuccess = true;
                     Response.Description = "User signed in";
                     return Response; 
@@ -77,6 +86,28 @@ namespace Qvooker.Server.Services
                 return Response;
             }
         }
+
+        private string GenerateJwtToken(IdentityUser user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName)
+                }),
+                Expires = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:ExpiryMinutes"])),
+                Issuer = _configuration["Jwt:Issuer"],
+                Audience = _configuration["Jwt:Audience"],
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+
+
         /// <summary>
         /// Functionality of Logging Out.
         /// </summary>
