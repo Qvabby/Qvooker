@@ -3,6 +3,7 @@ import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Injectable } from "@angular/core";
+import { AccountService } from './account.service';
 
 
 
@@ -39,8 +40,12 @@ interface Adress {
 export class AppComponent implements OnInit {
   public forecasts: WeatherForecast[] = [];
   public hotels: Hotel[] = [];
+  isLoggedIn: Observable<boolean>;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AccountService) {
+    this.isLoggedIn = this.authService.isLoggedIn();
+  }
+
 
   ngOnInit() {
     this.getHotels();

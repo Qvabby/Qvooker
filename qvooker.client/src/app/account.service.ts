@@ -24,7 +24,7 @@ export class AccountService {
   login(credentials: { username: string; password: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
       tap(response => {
-        if (response.token) {
+        if (response.serviceSuccess) {
           localStorage.setItem('token', response.data);
           this.loggedIn.next(true);
         }

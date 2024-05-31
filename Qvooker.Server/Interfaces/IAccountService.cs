@@ -13,6 +13,6 @@ namespace Qvooker.Server.Interfaces
         //Logout method.
         public Task<ServiceResponse<string>> Logout();
         
-        public string GenerateJwtToken(QvookerUser user);
+        public string GenerateJwtToken(IdentityUser user);
     }
 }

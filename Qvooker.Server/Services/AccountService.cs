@@ -87,7 +87,7 @@ namespace Qvooker.Server.Services
             }
         }
 
-        private string GenerateJwtToken(IdentityUser user)
+        public string GenerateJwtToken(IdentityUser user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
@@ -170,5 +170,6 @@ namespace Qvooker.Server.Services
                 return Response;
             }
         }
+
     }
 }

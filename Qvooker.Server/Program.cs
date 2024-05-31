@@ -100,9 +100,9 @@ namespace Qvooker.Server
             })
                 .AddJwtBearer(opt =>
                 {
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
-                    x.TokenValidationParameters = new TokenValidationParameters
+                    opt.RequireHttpsMetadata = false;
+                    opt.SaveToken = true;
+                    opt.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(key),

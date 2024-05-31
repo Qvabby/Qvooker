@@ -8,11 +8,17 @@ import { FormsModule } from '@angular/forms';
 
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
+import { LogoutComponent } from './logout/logout.component';
+import { WelcomeComponent } from './welcome/welcome.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
+    LoginComponent,
+    LogoutComponent,
+    WelcomeComponent,
   ],
   imports: [
     BrowserModule,

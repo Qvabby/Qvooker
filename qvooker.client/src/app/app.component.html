@@ -19,13 +19,17 @@
   <nav class="navbar navbar-light bg-light justify-content-between p-2 fixed-top">
     <a routerLink="/" class="navbar-brand text-warning">Qvooker</a>
     <div style="float:right">
-      <a class="btn btn-outline-success my-2 my-sm-0" routerLink="/register">Register</a>
-      <a class="btn btn-outline-success my-2 my-sm-0" routerLink="/login">Login</a>
+
+      <a class="btn btn-outline-success my-2 my-sm-0" *ngIf="!(isLoggedIn | async)" routerLink="/register">Register</a>
+      <a class="btn btn-outline-success my-2 my-sm-0"  *ngIf="!(isLoggedIn | async)"  routerLink="/login" >LogIn</a>
+      <a class="btn btn-outline-success my-2 my-sm-0" *ngIf="isLoggedIn | async" routerLink="/logout">LogOut</a>
+      <a class="btn btn-outline-success my-2 my-sm-0" routerLink="/welcome" *ngIf="isLoggedIn | async">Test</a>
+
     </div>
   </nav>
 
   <div class="container mt-5">
     <router-outlet></router-outlet>
   </div>
-  
+
 </div>
