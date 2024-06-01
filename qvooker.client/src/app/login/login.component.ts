@@ -15,9 +15,9 @@ export class LoginComponent {
 
   login() {
     this._accountService.login(this.credentials).subscribe(
-      success => {
-        if (success) {
-          this.router.navigate(['/']);
+      response => {
+        if (response.serviceSuccess) {
+          this.router.navigate(['/welcome']);
         }
       },
       error => {
