@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Qvooker.Server.Interfaces;
+using Qvooker.Server.Models;
 using Qvooker.Server.Models.DTOs;
 using Qvooker.Server.Services;
 
@@ -71,6 +72,24 @@ namespace Qvooker.Server.Controllers
                 return BadRequest(new { success = serviceResponse.ServiceSuccess, message = serviceResponse.Description, errorMessage = serviceResponse.errorMessage, essentialData = serviceResponse.essentialData});
             }
 
+        }
+
+        [HttpGet("info")]
+        public async Task<ActionResult<ServiceResponse<QvookerUser>>> GetUserInfo()
+        {
+            var serviceResponse = await _accountService.getUserInfo(User);
+            if (serviceResponse.ServiceSuccess) {
+                return Ok(serviceResponse.Data);
+            }
+            else if (serviceResponse.essentialData == "Unauthorized")
+            {
+                return Unauthorized();
+            }
+            else if (serviceResponse.essentialData == "NotFound")
+            {
+                return NotFound();
+            }
+            return BadRequest(new { success = false, message = "Invalid Data." });
         }
     }
 }

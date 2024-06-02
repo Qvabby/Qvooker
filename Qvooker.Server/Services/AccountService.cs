@@ -1,5 +1,6 @@
 ﻿using Azure;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Qvooker.Server.Data;
@@ -15,11 +16,11 @@ namespace Qvooker.Server.Services
     public class AccountService : IAccountService
     {
         //Using Dependency injection.
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<QvookerUser> _userManager;
+        private readonly SignInManager<QvookerUser> _signInManager;
         private readonly QvookerDbContext _qvookerDbContext;
         private readonly IConfiguration _configuration;
-        public AccountService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, QvookerDbContext qvookerDbContext, IConfiguration configuration)
+        public AccountService(UserManager<QvookerUser> userManager, SignInManager<QvookerUser> signInManager, QvookerDbContext qvookerDbContext, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -47,14 +48,14 @@ namespace Qvooker.Server.Services
 
 
                 //checks result.
-                if (result.Succeeded) 
+                if (result.Succeeded)
                 {
                     var user = await _userManager.FindByNameAsync(model.Username);
                     var token = GenerateJwtToken(user);
                     Response.Data = token;
                     Response.ServiceSuccess = true;
                     Response.Description = "User signed in";
-                    return Response; 
+                    return Response;
                 }
 
                 //In case I add TwoFactorAuth...
@@ -86,28 +87,34 @@ namespace Qvooker.Server.Services
                 return Response;
             }
         }
-
-        public string GenerateJwtToken(IdentityUser user)
+        /// <summary>
+        /// Generating JwtToken.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public string GenerateJwtToken(QvookerUser user)
         {
+            // Jwt Token shouldn't contain Sensitive information of user.
             var tokenHandler = new JwtSecurityTokenHandler();
+            // getting key from appsettings.json
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.UserName)
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Name, user.UserName)
+                    // Add other claims as needed
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:ExpiryMinutes"])),
                 Issuer = _configuration["Jwt:Issuer"],
                 Audience = _configuration["Jwt:Audience"],
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
+            // finally creating token
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-
-
         /// <summary>
         /// Functionality of Logging Out.
         /// </summary>
@@ -170,6 +177,56 @@ namespace Qvooker.Server.Services
                 return Response;
             }
         }
-
+        /// <summary>
+        /// getting any kind of information out of user from database.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<ServiceResponse<QvookerUser>> getUserInfo(ClaimsPrincipal User)
+        {
+            var Response = new ServiceResponse<QvookerUser>();
+            Response.Description = "Getting User Information Out Of Database.";
+            try
+            {
+                //getting Authenticated user's Id.
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (userId == null)
+                {
+                    Response.ServiceSuccess = false;
+                    Response.errorMessage = "User is not Authenticated";
+                    Response.essentialData = "Unauthorized";
+                    return Response;
+                }
+                //getting user info from db.
+                QvookerUser? user = await _qvookerDbContext.qvookerUsers.FirstOrDefaultAsync(x => x.Id == userId);
+                if (user == null) {
+                    Response.ServiceSuccess = false;
+                    Response.errorMessage = "User Not Found in database.";
+                    Response.essentialData = "NotFound";
+                    return Response;
+                }
+                #region incase I don't want to retrive All Information.
+                //returning UserInfo Data.
+                //var UserInfo = new
+                //{
+                //    user.Name,
+                //    user.LastName,
+                //    user.UserName, 
+                //    user.Email,
+                //    user.PhoneNumber,
+                //};
+                #endregion
+                Response.Data = user;
+                Response.ServiceSuccess = true;
+                return Response;
+            }
+            catch (Exception e)
+            {
+                Response.ServiceSuccess = false;
+                Response.errorMessage = e.Message;
+                return Response;
+            }
+            
+        }
     }
 }

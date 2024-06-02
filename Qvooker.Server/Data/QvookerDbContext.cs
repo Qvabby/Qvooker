@@ -6,7 +6,7 @@ using System.Reflection.Metadata;
 
 namespace Qvooker.Server.Data
 {
-    public class QvookerDbContext : IdentityDbContext<IdentityUser>
+    public class QvookerDbContext : IdentityDbContext<QvookerUser>
     {
         public QvookerDbContext(DbContextOptions options) : base(options)
         {

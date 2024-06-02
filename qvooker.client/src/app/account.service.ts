@@ -12,15 +12,19 @@ import { tap } from 'rxjs/operators';
 export class AccountService {
   private apiUrl = 'https://localhost:7071';
   private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
-
+  private tokenKey = 'token';
   constructor(private http: HttpClient, private router: Router) { }
 
 
   //checking if there is token in localstorage.
   private hasToken(): boolean {
-    return !!localStorage.getItem('token')
+    return !!localStorage.getItem(this.tokenKey)
   }
-  //getting token out of login post.
+  //getting token.
+  getToken(): string | null {
+    return localStorage.getItem(this.tokenKey);
+  }
+  //getting token out of login HTTP POST (log in.).
   login(credentials: { username: string; password: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
       tap(response => {
@@ -44,7 +48,7 @@ export class AccountService {
       }
     );
   }
-  //registering 
+  //sending register HTTP POST
   register(user: UserRegisterDTO): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/register`, user).pipe(
       map(response => {
@@ -56,9 +60,11 @@ export class AccountService {
       })
     )
   }
-
+  //check if user is logged in.
   isLoggedIn(): Observable<boolean> {
     return this.loggedIn.asObservable();
   }
+  //get information out of Jwt token.
+
 
 }

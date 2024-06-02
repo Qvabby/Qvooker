@@ -11,6 +11,8 @@ using Qvooker.Server.Interfaces;
 using Qvooker.Server.Services;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using Qvooker.Server.Models;
+using Microsoft.OpenApi.Models;
 
 namespace Qvooker.Server
 {
@@ -29,23 +31,41 @@ namespace Qvooker.Server
 
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
-            #region ----------------------SQLConnection-------------------------
+            #region SQLConnection
             //Connecting API to Database.
             builder.Services.AddDbContext<QvookerDbContext>(opt =>
-
-                opt.UseSqlServer(builder.Configuration.GetConnectionString("DevelopmentConnection"))
-
-            );
+                opt.UseSqlServer(builder.Configuration.GetConnectionString("DevelopmentConnection")));
             #endregion
 
             #region ------------------Identity-----------------------
             //Adding Identity.----------------------------------------------------
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+            builder.Services.AddIdentity<QvookerUser, IdentityRole>()
                 .AddRoles<IdentityRole>() // Registering Role-Based Authorization
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<QvookerDbContext>();
+
+            //JwtToken
+            var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
+            builder.Services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(opt =>
+                {
+                    opt.RequireHttpsMetadata = false;
+                    opt.SaveToken = true;
+                    opt.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                        ValidAudience = builder.Configuration["Jwt:Audience"],
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
 
             //Adding Administrator Role via policy.
             builder.Services.AddAuthorization(opt =>
@@ -53,6 +73,8 @@ namespace Qvooker.Server
                 opt.AddPolicy("RequireAdministrationRole",
                     policy => policy.RequireRole("Admin"));
             });
+
+
 
             //configuring Authorization.
             builder.Services.Configure<IdentityOptions>(opt =>
@@ -91,34 +113,38 @@ namespace Qvooker.Server
             //-----------------------------------------------------------
             #endregion
 
-            //JwtToken
-            var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
-            builder.Services.AddAuthentication(opt =>
-            {
-                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(opt =>
-                {
-                    opt.RequireHttpsMetadata = false;
-                    opt.SaveToken = true;
-                    opt.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                        ValidAudience = builder.Configuration["Jwt:Audience"],
-                        ClockSkew = TimeSpan.Zero
-                    };
-                });
-
 
             builder.Services.AddControllers();
 
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(opt =>
+            {
+
+                opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
+            });
+
 
             #region ------------------------Imapper------------------------------
 
@@ -128,16 +154,18 @@ namespace Qvooker.Server
             });
 
             IMapper mapper = mapperConfig.CreateMapper();
-
-            #endregion
-
-            #region --------------------Singleton/Scoped/Transients--------------------
-
-            //APPLICATION SINGLETONS / SCOPEDS / TRANSIENTS
             builder.Services.AddSingleton(mapper);
-            builder.Services.AddScoped<IAccountService, AccountService>();
-
             #endregion
+
+            #region DI for Application Services
+            builder.Services.AddScoped<IAccountService, AccountService>();
+            #endregion
+
+
+
+            builder.Services.AddAuthorization();
+
+
 
             builder.Services.AddControllersWithViews().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
@@ -148,20 +176,6 @@ namespace Qvooker.Server
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().
                  AllowAnyHeader());
             });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
             var app = builder.Build();
@@ -181,12 +195,17 @@ namespace Qvooker.Server
 
             app.UseHttpsRedirection();
 
+            app.UseRouting();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
             app.MapControllers();
 
             app.MapFallbackToFile("/index.html");
+
+
 
             app.Run();
         }
