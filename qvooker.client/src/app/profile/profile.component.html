@@ -1,3 +1,52 @@
-<div *ngIf="userInfo">
-  <h1>Welcome to your profile {{userInfo.name}}</h1>
+<div class="container border border-2 rounded-1 p-2 border-info">
+
+  <div class="row">
+
+    <div class="col-md-8 border-end border-dark">
+
+      <div class="row">
+
+        <div class="col-md-12">
+
+
+          <h3 *ngIf="userInfo" class="card-title">
+            Your Profile | {{userInfo.username}}
+          </h3>
+
+          <hr />
+        </div>
+
+        <div *ngIf="userInfo" class="col-md-12">
+
+          <p class="text-center">Your Personal Information</p>
+          <table class="table table-primary">
+            
+            <thead>
+              
+                
+              
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Username</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{userInfo.name}}</td>
+                <td>{{userInfo.username}}</td>
+              </tr>
+            </tbody>
+          </table>
+          
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </div>
+
