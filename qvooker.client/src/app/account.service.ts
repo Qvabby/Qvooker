@@ -49,22 +49,42 @@ export class AccountService {
     );
   }
   //sending register HTTP POST
+  //register(user: UserRegisterDTO): Observable<any> {
+  //  return this.http.post<any>(`${this.apiUrl}/register`, user).pipe(
+  //    map(response => {
+  //      if (response.serviceSuccess) {
+  //        this.router.navigate(['/'])
+  //      } else if (!response.serviceSuccess) {
+  //        alert(`$There were error registering. - ${response.errorMessage}`)
+  //      }
+  //    })
+  //  )
+  //}
   register(user: UserRegisterDTO): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/register`, user).pipe(
       map(response => {
         if (response.serviceSuccess) {
-          this.router.navigate(['/'])
-        } else if (!response.serviceSuccess) {
-          alert(`$There were error registering. - ${response.errorMessage}`)
+          this.router.navigate(['/']);
+        } else {
+          alert(`There was an error registering. - ${response.errorMessage}`);
         }
+        return response;
       })
-    )
+    );
   }
+
   //check if user is logged in.
   isLoggedIn(): Observable<boolean> {
     return this.loggedIn.asObservable();
   }
   //get information out of Jwt token.
+  getUserInfo(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/Account/info`).pipe(
+      tap(response => {
+        return response;
+      })
+    )
+  }
 
 
 }

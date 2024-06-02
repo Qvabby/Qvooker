@@ -14,6 +14,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { AccountService } from './account.service';
 import { AuthGuard } from './auth.guard';
 import { AuthInterceptor } from './auth.interceptor';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { AuthInterceptor } from './auth.interceptor';
     LoginComponent,
     LogoutComponent,
     WelcomeComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

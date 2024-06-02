@@ -17,7 +17,7 @@ export class LoginComponent {
     this._accountService.login(this.credentials).subscribe(
       response => {
         if (response.serviceSuccess) {
-          this.router.navigate(['/welcome']);
+          this.router.navigate(['/profile']);
         }
       },
       error => {

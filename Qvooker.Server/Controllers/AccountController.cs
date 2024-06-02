@@ -27,14 +27,18 @@ namespace Qvooker.Server.Controllers
                 var serviceResponse = await _accountService.Register(model);
                 if (serviceResponse.ServiceSuccess)
                 {
-                    return Ok(new { success = true, message = "Registration successful" });
+                    return Ok(serviceResponse);
                 }
                 else
                 {
-                    return BadRequest(new { success = false, message = "Registration failed", error = serviceResponse.errorMessage });
+                    return BadRequest(serviceResponse);
                 }
             }
-            return BadRequest(new { success = false, message = "Invalid data" });
+            return BadRequest(new ServiceResponse<IdentityResult>
+            {
+                ServiceSuccess = false,
+                errorMessage = "Invalid data"
+            });
         }
 
         [HttpPost]
@@ -74,7 +78,8 @@ namespace Qvooker.Server.Controllers
 
         }
 
-        [HttpGet("info")]
+        [HttpGet]
+        [Route("info")]
         public async Task<ActionResult<ServiceResponse<QvookerUser>>> GetUserInfo()
         {
             var serviceResponse = await _accountService.getUserInfo(User);

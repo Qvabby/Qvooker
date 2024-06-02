@@ -38,7 +38,6 @@ interface Adress {
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-  public forecasts: WeatherForecast[] = [];
   public hotels: Hotel[] = [];
   isLoggedIn: Observable<boolean>;
 

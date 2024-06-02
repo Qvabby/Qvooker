@@ -25,8 +25,8 @@ export class RegisterComponent {
   register() {
     this.accountService.register(this.user).subscribe(
       response => {
-        if (response.success) {
-          //navigate to successful part of registration.
+        if (response.serviceSuccess) {
+          this.router.navigate(['/welcome']);
         } else {
           //handling registration failure
           alert(response.message);
