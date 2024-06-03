@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Qvooker.Server.Interfaces;
@@ -63,6 +64,7 @@ namespace Qvooker.Server.Controllers
 
         [HttpPost]
         [Route("/logout")]
+        [Authorize]
         public async Task<ActionResult<ServiceResponse<string>>> LogoutUser()
         {
             var serviceResponse = await _accountService.Logout();
@@ -80,6 +82,7 @@ namespace Qvooker.Server.Controllers
 
         [HttpGet]
         [Route("info")]
+        [Authorize]
         public async Task<ActionResult<ServiceResponse<QvookerUser>>> GetUserInfo()
         {
             var serviceResponse = await _accountService.getUserInfo(User);

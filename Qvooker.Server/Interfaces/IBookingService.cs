@@ -1,7 +1,11 @@
-﻿namespace Qvooker.Server.Interfaces
+﻿using Qvooker.Server.Models;
+using Qvooker.Server.Models.DTOs;
+
+namespace Qvooker.Server.Interfaces
 {
     public interface IBookingService
     {
-        public Task<ServiceResponse<bool>> isHotelAvailable(int hotelId, DateTime startDate, DateTime endDate);
+        public Task<ServiceResponse<bool>> isHotelAvailable(BookRoomDTO model);
+        public Task<ServiceResponse<UserRoomBooking>> BookRoomAsync(BookRoomDTO model); 
     }
 }
