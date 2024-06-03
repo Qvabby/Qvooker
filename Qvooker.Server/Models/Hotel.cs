@@ -19,6 +19,8 @@ namespace Qvooker.Server.Models
 
         //hotel rooms linked to hotel class.
         public virtual ICollection<Room> Rooms { get; set; }
+        // Collection to represent the many-to-many relationship with QvookerUser
+        public virtual ICollection<UserRoomBooking> BookedRooms { get; set; } = new List<UserRoomBooking>();
 
     }
 }

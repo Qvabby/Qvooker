@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
       map((isLoggedIn: boolean) => {
         if (state.url === '/login' || state.url === '/register') {
           if (isLoggedIn) {
-            // If user is already logged in and tries to access login/register pages, redirect to home
+            // If user is already logged in and tries to access login/register pages, redirect to profile
             this.router.navigate(['/profile']);
             return false;
           } else {

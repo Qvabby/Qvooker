@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Qvooker.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class addIdentity : Migration
+    public partial class tryaddingbookingmodelschanges4_deletedwholetablesandrebuilding3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,9 +30,8 @@ namespace Qvooker.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -51,6 +50,20 @@ namespace Qvooker.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Hotels",
+                columns: table => new
+                {
+                    HotelId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HotelName = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    Stars = table.Column<byte>(type: "tinyint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Hotels", x => x.HotelId);
                 });
 
             migrationBuilder.CreateTable(
@@ -159,6 +172,86 @@ namespace Qvooker.Server.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Adresses",
+                columns: table => new
+                {
+                    AdressId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Country = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    HotelId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Adresses", x => x.AdressId);
+                    table.ForeignKey(
+                        name: "FK_Adresses_Hotels_HotelId",
+                        column: x => x.HotelId,
+                        principalTable: "Hotels",
+                        principalColumn: "HotelId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rooms",
+                columns: table => new
+                {
+                    RoomId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(250)", nullable: false),
+                    price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    HotelId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rooms", x => x.RoomId);
+                    table.ForeignKey(
+                        name: "FK_Rooms_Hotels_HotelId",
+                        column: x => x.HotelId,
+                        principalTable: "Hotels",
+                        principalColumn: "HotelId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRoomBookings",
+                columns: table => new
+                {
+                    QvookerUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoomId = table.Column<int>(type: "int", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    HotelId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRoomBookings", x => new { x.QvookerUserId, x.RoomId, x.StartDate });
+                    table.CheckConstraint("CK_UserRoomBooking_Dates", "[EndDate] > [StartDate]");
+                    table.ForeignKey(
+                        name: "FK_UserRoomBookings_AspNetUsers_QvookerUserId",
+                        column: x => x.QvookerUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserRoomBookings_Hotels_HotelId",
+                        column: x => x.HotelId,
+                        principalTable: "Hotels",
+                        principalColumn: "HotelId");
+                    table.ForeignKey(
+                        name: "FK_UserRoomBookings_Rooms_RoomId",
+                        column: x => x.RoomId,
+                        principalTable: "Rooms",
+                        principalColumn: "RoomId");
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Adresses_HotelId",
+                table: "Adresses",
+                column: "HotelId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -197,11 +290,29 @@ namespace Qvooker.Server.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rooms_HotelId",
+                table: "Rooms",
+                column: "HotelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRoomBookings_HotelId",
+                table: "UserRoomBookings",
+                column: "HotelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRoomBookings_RoomId",
+                table: "UserRoomBookings",
+                column: "RoomId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Adresses");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -218,10 +329,19 @@ namespace Qvooker.Server.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "UserRoomBookings");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Rooms");
+
+            migrationBuilder.DropTable(
+                name: "Hotels");
         }
     }
 }

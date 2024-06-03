@@ -18,5 +18,8 @@ namespace Qvooker.Server.Models
         [ForeignKey("hotel")]
         public int HotelId { get; set; }
         public virtual Hotel hotel { get; set; }
+
+        // Collection to represent the many-to-many relationship with UserRoomBooking
+        public virtual ICollection<UserRoomBooking> BookedByUsers { get; set; } = new List<UserRoomBooking>();
     }
 }

@@ -307,6 +307,35 @@ namespace Qvooker.Server.Migrations
                     b.ToTable("Rooms");
                 });
 
+            modelBuilder.Entity("Qvooker.Server.Models.UserRoomBooking", b =>
+                {
+                    b.Property<string>("QvookerUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("HotelId")
+                        .HasColumnType("int");
+
+                    b.HasKey("QvookerUserId", "RoomId", "StartDate");
+
+                    b.HasIndex("HotelId");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("UserRoomBookings", t =>
+                        {
+                            t.HasCheckConstraint("CK_UserRoomBooking_Dates", "[EndDate] > [StartDate]");
+                        });
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -380,11 +409,50 @@ namespace Qvooker.Server.Migrations
                     b.Navigation("hotel");
                 });
 
+            modelBuilder.Entity("Qvooker.Server.Models.UserRoomBooking", b =>
+                {
+                    b.HasOne("Qvooker.Server.Models.Hotel", "Hotel")
+                        .WithMany("BookedRooms")
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Qvooker.Server.Models.QvookerUser", "QvookerUser")
+                        .WithMany("UserRoomBookings")
+                        .HasForeignKey("QvookerUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Qvooker.Server.Models.Room", "Room")
+                        .WithMany("BookedByUsers")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Hotel");
+
+                    b.Navigation("QvookerUser");
+
+                    b.Navigation("Room");
+                });
+
             modelBuilder.Entity("Qvooker.Server.Models.Hotel", b =>
                 {
+                    b.Navigation("BookedRooms");
+
                     b.Navigation("HotelAdresses");
 
                     b.Navigation("Rooms");
+                });
+
+            modelBuilder.Entity("Qvooker.Server.Models.QvookerUser", b =>
+                {
+                    b.Navigation("UserRoomBookings");
+                });
+
+            modelBuilder.Entity("Qvooker.Server.Models.Room", b =>
+                {
+                    b.Navigation("BookedByUsers");
                 });
 #pragma warning restore 612, 618
         }
