@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Qvooker.Server.Interfaces;
 using Qvooker.Server.Models;
 using Qvooker.Server.Models.DTOs;
+using Qvooker.Server.Models.DTOs.UserInfo;
 using Qvooker.Server.Services;
 
 namespace Qvooker.Server.Controllers
@@ -83,7 +84,7 @@ namespace Qvooker.Server.Controllers
         [HttpGet]
         [Route("info")]
         [Authorize]
-        public async Task<ActionResult<ServiceResponse<QvookerUser>>> GetUserInfo()
+        public async Task<ActionResult<ServiceResponse<GetUserInfoDTO>>> GetUserInfo()
         {
             var serviceResponse = await _accountService.getUserInfo(User);
             if (serviceResponse.ServiceSuccess) {

@@ -7,6 +7,7 @@ using Qvooker.Server.Data;
 using Qvooker.Server.Interfaces;
 using Qvooker.Server.Models;
 using Qvooker.Server.Models.DTOs;
+using Qvooker.Server.Models.DTOs.UserInfo;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -182,9 +183,9 @@ namespace Qvooker.Server.Services
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<ServiceResponse<QvookerUser>> getUserInfo(ClaimsPrincipal User)
+        public async Task<ServiceResponse<GetUserInfoDTO>> getUserInfo(ClaimsPrincipal User)
         {
-            var Response = new ServiceResponse<QvookerUser>();
+            var Response = new ServiceResponse<GetUserInfoDTO>();
             Response.Description = "Getting User Information Out Of Database.";
             try
             {
@@ -198,8 +199,37 @@ namespace Qvooker.Server.Services
                     return Response;
                 }
                 //getting user info from db.
-                QvookerUser? user = await _qvookerDbContext.qvookerUsers.FirstOrDefaultAsync(x => x.Id == userId);
-                if (user == null) {
+                GetUserInfoDTO? user = await _qvookerDbContext.qvookerUsers
+                    .Select(user => new GetUserInfoDTO
+                    {
+                        userId = user.Id,
+                        Name = user.Name,
+                        LastName = user.LastName,
+                        PhoneNumber = user.PhoneNumber,
+                        Email = user.Email,
+                        UserName = user.UserName,
+
+                        BookedRooms = user.UserRoomBookings
+                            .Select(x => new GetUserRoomInfoDTO
+                            {
+                                id = x.Room.RoomId,
+                                HotelId = x.HotelId,
+                                Name = x.Room.Name,
+                                Description = x.Room.Description,
+                                price = x.Room.price,
+                            HotelAdresses = x.Hotel.HotelAdresses
+                                .Select(y => new GetUserHotelAdressesInfoDTO
+                                {
+                                    City = y.City,
+                                    Country = y.Country,
+                                    Street = y.Street,
+                                }).ToList(),
+                            }).ToList()
+                }).FirstOrDefaultAsync(x => x.userId == userId);
+
+
+                if (user == null)
+                {
                     Response.ServiceSuccess = false;
                     Response.errorMessage = "User Not Found in database.";
                     Response.essentialData = "NotFound";
@@ -216,6 +246,7 @@ namespace Qvooker.Server.Services
                 //    user.PhoneNumber,
                 //};
                 #endregion
+                Response.essentialData = _qvookerDbContext.UserRoomBookings.FirstOrDefaultAsync(x => x.QvookerUserId == user.userId).ToString();
                 Response.Data = user;
                 Response.ServiceSuccess = true;
                 return Response;
@@ -226,7 +257,7 @@ namespace Qvooker.Server.Services
                 Response.errorMessage = e.Message;
                 return Response;
             }
-            
+
         }
     }
 }

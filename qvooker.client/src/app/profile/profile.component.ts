@@ -9,6 +9,9 @@ interface UserInfo {
   email?: string;
   username?: string;
 }
+interface userRoomBookings {
+
+}
 
 @Component({
   selector: 'app-profile',
