@@ -26,7 +26,7 @@ namespace Qvooker.Server
         //}
 
 
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
 
             var builder = WebApplication.CreateBuilder(args);
@@ -207,6 +207,56 @@ namespace Qvooker.Server
 
             app.MapFallbackToFile("/index.html");
 
+            //seeding initial data into our system.
+            using (var scope = app.Services.CreateScope())
+            {
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                //Roles.
+                var roles = new[] { "Admin", "Member" };
+                //adding roles
+                foreach (var role in roles)
+                {
+                    //checking if they already exist.
+                    if (!await roleManager.RoleExistsAsync(role))
+                    {
+                        await roleManager.CreateAsync(new IdentityRole(role));
+                    }
+                }
+            }
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var userManager =
+                    scope.ServiceProvider.GetRequiredService<UserManager<QvookerUser>>();
+
+                string QvabbyEmail = "arzonstickman999@gmail.com";
+                string QvaPassword = "!Qvabebi69420";
+
+                if (await userManager.FindByEmailAsync(QvabbyEmail) == null)
+                {
+                    var user = new QvookerUser
+                    {
+                        Name = "Saba",
+                        LastName = "Salukvadze",
+                        UserName = "Qvabbyte",
+                        Email = QvabbyEmail,
+                        PhoneNumber = "599022908",
+                    };
+                    await userManager.CreateAsync(user, QvaPassword);
+
+                    await userManager.AddToRoleAsync(user, "Admin");
+                }
+                else
+                {
+                    var user = await userManager.FindByEmailAsync(QvabbyEmail);
+                    var userRoles = await userManager.GetRolesAsync(user);
+
+                    if (!userRoles.Contains("Admin"))
+                    {
+                        await userManager.AddToRoleAsync(user, "Admin");
+                    }
+                }
+            }
 
 
             app.Run();
