@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { AccountService } from '../account.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -37,13 +37,16 @@ interface Room {
 export class ProfileComponent implements OnInit {
 
   userInfo: UserInfo | null = null;
-  
-  
-  constructor(private _accountService: AccountService, private _router:Router) { }
-    ngOnInit(): void {
-      this.getInfo()
-    }
+  showBorderEnd = true; // Flag to control whether to show border-end
 
+  constructor(private _accountService: AccountService, private _router: Router) { }
+  ngOnInit(): void {
+    this.getInfo()
+  }
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.showBorderEnd = window.innerWidth > 767; // Check window width and update flag
+  }
 
   getInfo() {
     this._accountService.getUserInfo().subscribe(
@@ -71,5 +74,6 @@ export class ProfileComponent implements OnInit {
         console.log("userinfo: ", this.userInfo);
       }
     );
+
   }
 }
