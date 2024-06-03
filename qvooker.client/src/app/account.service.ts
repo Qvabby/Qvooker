@@ -88,6 +88,7 @@ export class AccountService {
   getUserInfo(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/Account/info`).pipe(
       tap(response => {
+        console.log("response: "+ response)
         return response;
       })
     )

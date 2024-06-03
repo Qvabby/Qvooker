@@ -5,12 +5,28 @@ import { Observable } from 'rxjs';
 
 
 interface UserInfo {
+  userId: string;
   name?: string;
-  email?: string;
+  lastName?: string;
   username?: string;
+  email?: string;
+  phoneNumber?: string;
+  bookedRooms: Room[];
 }
-interface userRoomBookings {
 
+interface HotelAddress {
+  country: string;
+  city: string;
+  street: string;
+}
+
+interface Room {
+  id: number;
+  hotelId: number;
+  name: string;
+  description: string;
+  price: number;
+  hotelAddresses: HotelAddress[];
 }
 
 @Component({
@@ -33,12 +49,27 @@ export class ProfileComponent implements OnInit {
     this._accountService.getUserInfo().subscribe(
       data => {
         this.userInfo = {
+          userId: data.userId,
           name: data.name,
+          lastName: data.lastName,
           email: data.email,
-          username: data.userName
+          phoneNumber: data.phoneNumber,
+          username: data.userName,
+          bookedRooms: data.bookedRooms.map((room: any) => ({
+            id: room.id,
+            hotelId: room.hotelId,
+            name: room.name,
+            description: room.description,
+            price: room.price,
+            hotelAddresses: room.hotelAdresses.map((address: any) => ({
+              country: address.country,
+              city: address.city,
+              street: address.street
+            }))
+          }))
         };
-        console.log(this.userInfo)
+        console.log("userinfo: ", this.userInfo);
       }
-    )
+    );
   }
 }
