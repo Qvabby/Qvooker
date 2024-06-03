@@ -1,0 +1,9 @@
+<div *ngIf="hotel">
+  <h2>{{ hotel.hotelName }}</h2>
+  <!-- Display other hotel details -->
+  <div *ngFor="let room of hotel.rooms">
+    <h3>{{ room.name }}</h3>
+    <!-- Display room details -->
+    <button (click)="bookRoom(room.id)">Book Room</button>
+  </div>
+</div>

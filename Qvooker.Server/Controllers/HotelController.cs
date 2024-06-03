@@ -35,14 +35,18 @@ namespace Qvooker.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Hotel>> GetHotel(int id)
         {
-            var hotel = await _context.Hotels.FindAsync(id);
+            var hotel = await _context.Hotels
+                .Include(x => x.Rooms)
+                .Include(X => X.BookedRooms)
+                .Include(x => x.HotelAdresses)
+                .FirstOrDefaultAsync(x => x.HotelId == id);
 
             if (hotel == null)
             {
                 return NotFound();
             }
 
-            return hotel;
+            return Ok(hotel);
         }
 
         // PUT: api/Hotel/5
