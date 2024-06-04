@@ -1,21 +1,21 @@
 <div class="container mt-3">
   <div class="card shadow-sm addercards">
-    <div class="card-header bg-warning text-white">
-      <h2 class="mb-0">Add Room</h2>
+    <div class="card-header bg-info text-white">
+      <h2 class="mb-0">Add Address</h2>
     </div>
     <div class="card-body">
-      <form (ngSubmit)="addRoom()">
+      <form (ngSubmit)="addAddress()">
         <div class="form-group">
-          <label for="roomName">Room Name:</label>
-          <input class="form-control" type="text" id="roomName" [(ngModel)]="room.name" name="roomName" required>
+          <label for="country">Country:</label>
+          <input class="form-control" type="text" id="country" [(ngModel)]="address.country" name="country" required />
         </div>
         <div class="form-group">
-          <label for="roomDescription">Description:</label>
-          <textarea class="form-control" id="roomDescription" [(ngModel)]="room.description" name="roomDescription" rows="1"></textarea>
+          <label for="city">City:</label>
+          <input class="form-control" type="text" id="city" [(ngModel)]="address.city" name="city" required />
         </div>
         <div class="form-group">
-          <label for="roomPrice">Price:</label>
-          <input class="form-control" type="number" id="roomPrice" [(ngModel)]="room.price" name="roomPrice" required>
+          <label for="street">Street:</label>
+          <input class="form-control" type="text" id="street" [(ngModel)]="address.street" name="street" required>
         </div>
         <div class="text-center mt-4">
           <div class="row justify-content-center">

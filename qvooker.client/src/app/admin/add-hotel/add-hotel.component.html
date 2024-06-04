@@ -1,38 +1,60 @@
-<h2>Add Hotel</h2>
-<form (ngSubmit)="AddHotel()">
-  <label for="hotelName">Hotel Name:</label>
-  <input type="text" id="hotelName" [(ngModel)]="hotel.hotelName" name="hotelName" required>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center">
+          <h2>Add Hotel</h2>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="AddHotel()">
+            <div class="form-group">
+              <label for="hotelName">Hotel Name:</label>
+              <input class="form-control" type="text" id="hotelName" [(ngModel)]="hotel.hotelName" name="hotelName" required>
+            </div>
+            <div class="form-group">
+              <label for="stars">Stars:</label>
+              <input class="form-control" type="number" id="stars" [(ngModel)]="hotel.stars" name="stars" required>
+            </div>
 
-  <label for="stars">Stars:</label>
-  <input type="number" id="stars" [(ngModel)]="hotel.stars" name="stars" required>
+            <div class="row">
+              <div class="col-md-6">
+                <h4>Addresses</h4>
+                <app-add-adress class="addercards" *ngIf="showAdressForm" (adressAdded)="onAdressAdded($event)"></app-add-adress>
+                <button *ngIf="!showAdressForm" class="btn btn-info mb-1" type="button" (click)="showAdressForm = true">Add Address</button>
+              </div>
 
+              <div class="col-md-6">
+                <h4>Rooms</h4>
+                <app-add-room class="addercards" *ngIf="showRoomForm" (roomAdded)="onRoomAdded($event)"></app-add-room>
+                <button *ngIf="!showRoomForm" class="btn btn-warning mb-1" type="button" (click)="showRoomForm = true">Add Room</button>
+              </div>
+            </div>
 
-  <div>
-    <label>Addresses:</label>
-    <div *ngFor="let address of hotel.hotelAdresses; let i = index">
-      <p>{{ address.street }}, {{ address.city }}, {{ address.country }}</p>
-    </div>
-    <div>
-      <label for="country">Country:</label>
-      <input type="text" id="country" [(ngModel)]="newAddress.country" name="country">
-      <label for="city">City:</label>
-      <input type="text" id="city" [(ngModel)]="newAddress.city" name="city">
-      <label for="street">Street:</label>
-      <input type="text" id="street" [(ngModel)]="newAddress.street" name="street">
-      <button type="button" (click)="addAddress()">Add Address</button>
+            <div class="row">
+              <div class="col-md-6">
+                <h5>Added Addresses</h5>
+                <ul class="list-group mb-3">
+                  <li class="list-group-item list-group-item-info" *ngFor="let address of addedAddress; let i = index">
+                    {{ address.street }}, {{ address.city }}, {{ address.country }}
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h5>Added Rooms</h5>
+                <ul class="list-group mb-3">
+                  <li class="list-group-item list-group-item-warning" *ngFor="let room of addedRooms">
+                    {{ room.name }} - {{ room.description }} (${{ room.price }})
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="text-center mt-4">
+              <button class="btn btn-primary btn-lg" type="submit">Save Hotel</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
-
-  <!-- Add Room Button -->
-  <button type="button" (click)="showRoomForm = true">Add Room</button>
-
-  <!-- Display Added Rooms -->
-  <div *ngFor="let room of addedRooms">
-    {{ room.name }} - {{ room.description }} (${{ room.price }})
-  </div>
-
-  <!-- Conditionally Render Room Form -->
-  <app-add-room *ngIf="showRoomForm" (roomAdded)="onRoomAdded($event)"></app-add-room>
-
-  <button type="submit">Save Hotel</button>
-</form>
+</div>

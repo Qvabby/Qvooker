@@ -17,12 +17,8 @@ export class AddHotelComponent {
     hotelAdresses: [],
     rooms: []
   };
-
-  newAddress: AddAdressDto = {
-    country: '',
-    city: '',
-    street: ''
-  };
+  showAdressForm = false;
+  addedAddress: AddAdressDto[] = [];
 
   showRoomForm = false;
   addedRooms: AddRoomDto[] = [];
@@ -31,6 +27,7 @@ export class AddHotelComponent {
 
   AddHotel() {
     this.hotel.rooms = this.addedRooms;
+    this.hotel.hotelAdresses = this.addedAddress;
     this.hotelService.addHotel(this.hotel).subscribe(
       response => {
         if (response.hotelId != 0) {
@@ -43,26 +40,23 @@ export class AddHotelComponent {
     )
   }
 
-  addAddress() {
-    if (this.hotel.hotelAdresses) {
-      this.hotel.hotelAdresses.push(this.newAddress);
-      console.log(this.hotel.hotelAdresses);
-      this.resetAdressForm();
-    }
-  }
-
-  resetAdressForm() {
-    this.newAddress = {
-      country: '',
-      city: '',
-      street: ''
-    };
-  }
-
   onRoomAdded(roomEvent: AddRoomDto) {
     const room: AddRoomDto = roomEvent as AddRoomDto;
-    this.addedRooms.push(room);
+    console.log(room);
+    if (room != undefined) {
+      this.addedRooms.push(room);
+    }
     this.showRoomForm = false; // Hide the room form
+  }
+
+  onAdressAdded(adressEvent: AddAdressDto) {
+    
+    const adress: AddAdressDto = adressEvent as AddAdressDto;
+    console.log(adress);
+    if (adress != undefined) {
+      this.addedAddress.push(adress);
+    }
+    this.showAdressForm = false; // Hide the adress form
   }
 
 }

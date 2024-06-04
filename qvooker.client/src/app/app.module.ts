@@ -19,6 +19,7 @@ import { HotelListingComponent } from './hotel-listing/hotel-listing.component';
 import { HotelDetailComponent } from './hotel-detail/hotel-detail.component';
 import { AddHotelComponent } from './admin/add-hotel/add-hotel.component';
 import { AddRoomComponent } from './admin/add-room/add-room.component';
+import { AddAdressComponent } from './admin/add-adress/add-adress.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { AddRoomComponent } from './admin/add-room/add-room.component';
     HotelDetailComponent,
     AddHotelComponent,
     AddRoomComponent,
+    AddAdressComponent,
   ],
   imports: [
     BrowserModule,

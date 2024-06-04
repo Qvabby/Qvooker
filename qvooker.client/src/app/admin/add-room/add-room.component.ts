@@ -27,4 +27,8 @@ export class AddRoomComponent {
       price: 0
     };
   }
+  cancel() {
+    this.roomAdded.emit();
+  }
+
 }
