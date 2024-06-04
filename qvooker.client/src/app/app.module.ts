@@ -17,6 +17,8 @@ import { AuthInterceptor } from './auth.interceptor';
 import { ProfileComponent } from './profile/profile.component';
 import { HotelListingComponent } from './hotel-listing/hotel-listing.component';
 import { HotelDetailComponent } from './hotel-detail/hotel-detail.component';
+import { AddHotelComponent } from './admin/add-hotel/add-hotel.component';
+import { AddRoomComponent } from './admin/add-room/add-room.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { HotelDetailComponent } from './hotel-detail/hotel-detail.component';
     ProfileComponent,
     HotelListingComponent,
     HotelDetailComponent,
+    AddHotelComponent,
+    AddRoomComponent,
   ],
   imports: [
     BrowserModule,
