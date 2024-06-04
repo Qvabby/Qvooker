@@ -1,9 +1,32 @@
-<div *ngIf="hotel">
-  <h2>{{ hotel.hotelName }}</h2>
-  <!-- Display other hotel details -->
-  <div *ngFor="let room of hotel.rooms">
-    <h3>{{ room.name }}</h3>
-    <!-- Display room details -->
-    <button (click)="bookRoom(room.id)">Book Room</button>
+<div *ngIf="hotel" class="container mt-4">
+  <div class="card shadow-sm rounded border-0">
+    <div class="card-header bg-light text-dark">
+      <h2 class="text-info">{{ hotel.hotelName }}</h2>
+      <div class="stars mb-3">
+        <div class="d-inline" *ngFor="let index of [0,1,2,3,4]">
+          <span class="fa fa-star" *ngIf="index < hotel.stars"></span>
+          <span class="fa fa-star-o" *ngIf="index >= hotel.stars"></span>
+        </div>
+      </div>
+      <p class="address mb-0"><strong>Address:</strong></p>
+      <ul class="list-unstyled">
+        <li *ngFor="let address of hotel.hotelAdresses">{{ address.street }}, {{ address.city }}, {{ address.country }}</li>
+      </ul>
+    </div>
+    <div class="card-body">
+      <h3 class="mb-4">Rooms</h3>
+      <div *ngFor="let room of hotel.rooms" class="room-card mb-3">
+        <div class="card shadow-sm rounded border-0">
+          <div class="card-header bg-secondary text-white">
+            <h4>{{ room.name }}</h4>
+          </div>
+          <div class="card-body bg-light">
+            <p>{{ room.description }}</p>
+            <p class="price mb-0">Price: ${{ room.price }}</p>
+            <button (click)="bookRoom(room.roomId)" class="btn btn-outline-secondary btn-lg mt-3">Book Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
