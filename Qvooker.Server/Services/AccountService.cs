@@ -52,7 +52,7 @@ namespace Qvooker.Server.Services
                 if (result.Succeeded)
                 {
                     var user = await _userManager.FindByNameAsync(model.Username);
-                    var token = GenerateJwtToken(user);
+                    var token = await GenerateJwtToken(user);
                     Response.Data = token;
                     Response.ServiceSuccess = true;
                     Response.Description = "User signed in";
@@ -93,19 +93,21 @@ namespace Qvooker.Server.Services
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public string GenerateJwtToken(QvookerUser user)
+        public async Task<string> GenerateJwtToken(QvookerUser user)
         {
             // Jwt Token shouldn't contain Sensitive information of user.
             var tokenHandler = new JwtSecurityTokenHandler();
             // getting key from appsettings.json
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
+            var roles = await _userManager.GetRolesAsync(user);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.UserName)
-                    // Add other claims as needed
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    //role claim.
+                    new Claim(ClaimTypes.Role, roles.FirstOrDefault() ?? "User") // Use the first role or default to "User"
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:ExpiryMinutes"])),
                 Issuer = _configuration["Jwt:Issuer"],
@@ -163,6 +165,10 @@ namespace Qvooker.Server.Services
                 //check if registered.
                 if (result.Succeeded)
                 {
+
+                    // Assign default role to the user.
+                    await _userManager.AddToRoleAsync(user, "Member"); // Replace "Member" with your default role name.
+
                     //automatically signs user in.
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
@@ -217,7 +223,7 @@ namespace Qvooker.Server.Services
                                 Name = x.Room.Name,
                                 Description = x.Room.Description,
                                 price = x.Room.price,
-                            HotelAdresses = x.Hotel.HotelAdresses
+                                HotelAdresses = x.Hotel.HotelAdresses
                                 .Select(y => new GetUserHotelAdressesInfoDTO
                                 {
                                     City = y.City,
@@ -225,7 +231,7 @@ namespace Qvooker.Server.Services
                                     Street = y.Street,
                                 }).ToList(),
                             }).ToList()
-                }).FirstOrDefaultAsync(x => x.userId == userId);
+                    }).FirstOrDefaultAsync(x => x.userId == userId);
 
 
                 if (user == null)

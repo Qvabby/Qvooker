@@ -72,6 +72,8 @@ namespace Qvooker.Server
             {
                 opt.AddPolicy("RequireAdministrationRole",
                     policy => policy.RequireRole("Admin"));
+                opt.AddPolicy("RequireMemberRole",
+                    policy => policy.RequireRole("Member"));
             });
 
 

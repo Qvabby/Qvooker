@@ -16,7 +16,7 @@ namespace Qvooker.Server.Interfaces
         //Logout method.
         public Task<ServiceResponse<string>> Logout();
         //Jwt Token Generating method.
-        public string GenerateJwtToken(QvookerUser user);
+        public Task<string> GenerateJwtToken(QvookerUser user);
         //getting Any kind of information out of user from database method.
         public Task<ServiceResponse<GetUserInfoDTO>> getUserInfo(ClaimsPrincipal User);
     }

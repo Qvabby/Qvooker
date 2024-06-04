@@ -9,6 +9,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { HotelListingComponent } from './hotel-listing/hotel-listing.component';
 import { HotelDetailComponent } from './hotel-detail/hotel-detail.component';
 import { AddHotelComponent } from './admin/add-hotel/add-hotel.component';
+import { AdminAuthGuard } from './AdminAuthGuard';
 
 const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [AuthGuard] },
@@ -18,7 +19,7 @@ const routes: Routes = [
   { path: 'logout', component: LogoutComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'hotel/:hotelId', component: HotelDetailComponent, canActivate: [AuthGuard] },
-  { path: 'admin/addHotel', component: AddHotelComponent, canActivate: [AuthGuard] }
+  { path: 'admin/addHotel', component: AddHotelComponent, canActivate: [AdminAuthGuard] }
 ];
 
 @NgModule({
