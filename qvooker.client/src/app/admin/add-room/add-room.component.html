@@ -1,1 +1,14 @@
-<p>add-room works!</p>
+<div>
+  <h2>Add Room</h2>
+  <form (ngSubmit)="addRoom()">
+    <label for="roomName">Room Name:</label>
+    <input type="text" id="roomName" [(ngModel)]="room.name" name="roomName" required>
+
+    <label for="roomDescription">Description:</label>
+    <textarea id="roomDescription" [(ngModel)]="room.description" name="roomDescription" rows="3"></textarea>
+
+    <label for="roomPrice">Price:</label>
+    <input type="number" id="roomPrice" [(ngModel)]="room.price" name="roomPrice" required>
+    <button type="submit">Save Room</button>
+  </form>
+</div>

@@ -29,7 +29,6 @@ export class HotelService {
     );
   }
 
-
   addHotel(hotel: AddHotelDto): Observable<any> {
     return this.http.post(`${this.apiUrl}`, hotel).pipe(
       map(response => {

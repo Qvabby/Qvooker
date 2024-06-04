@@ -1,1 +1,38 @@
-<p>add-hotel works!</p>
+<h2>Add Hotel</h2>
+<form (ngSubmit)="AddHotel()">
+  <label for="hotelName">Hotel Name:</label>
+  <input type="text" id="hotelName" [(ngModel)]="hotel.hotelName" name="hotelName" required>
+
+  <label for="stars">Stars:</label>
+  <input type="number" id="stars" [(ngModel)]="hotel.stars" name="stars" required>
+
+
+  <div>
+    <label>Addresses:</label>
+    <div *ngFor="let address of hotel.hotelAdresses; let i = index">
+      <p>{{ address.street }}, {{ address.city }}, {{ address.country }}</p>
+    </div>
+    <div>
+      <label for="country">Country:</label>
+      <input type="text" id="country" [(ngModel)]="newAddress.country" name="country">
+      <label for="city">City:</label>
+      <input type="text" id="city" [(ngModel)]="newAddress.city" name="city">
+      <label for="street">Street:</label>
+      <input type="text" id="street" [(ngModel)]="newAddress.street" name="street">
+      <button type="button" (click)="addAddress()">Add Address</button>
+    </div>
+  </div>
+
+  <!-- Add Room Button -->
+  <button type="button" (click)="showRoomForm = true">Add Room</button>
+
+  <!-- Display Added Rooms -->
+  <div *ngFor="let room of addedRooms">
+    {{ room.name }} - {{ room.description }} (${{ room.price }})
+  </div>
+
+  <!-- Conditionally Render Room Form -->
+  <app-add-room *ngIf="showRoomForm" (roomAdded)="onRoomAdded($event)"></app-add-room>
+
+  <button type="submit">Save Hotel</button>
+</form>
