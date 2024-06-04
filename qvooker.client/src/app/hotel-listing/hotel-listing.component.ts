@@ -9,7 +9,7 @@ import { HotelService} from '../hotel.service';
 })
 export class HotelListingComponent implements OnInit {
   hotels: any[] = [];
-
+  stars: number = 0;
 
   constructor(private hotelService: HotelService, private router: Router) { }
 
@@ -20,6 +20,7 @@ export class HotelListingComponent implements OnInit {
   getHotels() {
     this.hotelService.getHotels().subscribe(
       data => {
+        this.stars = data.stars
         this.hotels = data;
       }
     );

@@ -1,0 +1,9 @@
+.csscards {
+  flex: 1 0 auto;
+}
+
+.card-deck {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}

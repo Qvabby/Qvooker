@@ -1,5 +1,37 @@
-<div *ngFor="let hotel of hotels">
-  <h2>{{ hotel.hotelName }}</h2>
-  <!-- Display other hotel details -->
-  <button (click)="viewHotelDetails(hotel.hotelId)">View Details</button>
+<div style="background-color:#f7f7f7;" class="row mt-1 p-2 border border-2 border-light">
+  <div class="col-md-12 card-deck row">
+    <div class="p-2 col-md-4 card border-0 flex-fill" *ngFor="let hotel of hotels ">
+      <div class="card-header bg-light p-3 mt-2 rounded-2 ">
+
+
+        <h4 class="title text-info text-start d-inline">{{ hotel.hotelName }}</h4>
+
+        <div class="col-md-12">
+          <div class="d-inline" *ngFor="let index of [0,1,2,3,4]">
+            <span class="fa fa-star" *ngIf="index < hotel.stars"></span>
+            <span class="fa fa-star-o" *ngIf="index >= hotel.stars"></span>
+          </div>
+        </div>
+
+
+      </div>
+      <hr />
+
+      <!-- Display other hotel details -->
+      <div class="card-body bg-secondary p-2 rounded-2 text-white text-start rounded-bottom-0">
+
+        <p> Room amount: {{hotel.rooms.length}}</p>
+        <strong>Adresses: </strong>
+        <div *ngFor="let adress of hotel.hotelAdresses">
+          <strong>{{adress.country}}/{{adress.city}}/{{adress.street}}</strong>
+        </div>
+        <hr />
+        
+      </div>
+      <div class="card-footer bg-secondary">
+        <button style="width:100%;" class="align-self-end btn btn-outline-light btn-lg btn-block" (click)="viewHotelDetails(hotel.hotelId)">View Details</button>
+      </div>
+
+    </div>
+  </div>
 </div>
