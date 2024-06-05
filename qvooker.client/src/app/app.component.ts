@@ -40,11 +40,15 @@ interface Adress {
 export class AppComponent implements OnInit {
   public hotels: Hotel[] = [];
   isLoggedIn: Observable<boolean>;
-
+  isNavbarCollapsed = true;
   constructor(private http: HttpClient, private authService: AccountService) {
     this.isLoggedIn = this.authService.isLoggedIn();
   }
+  
 
+  toggleNavbar() {
+    this.isNavbarCollapsed = !this.isNavbarCollapsed;
+  }
 
   ngOnInit() {
     this.getHotels();
