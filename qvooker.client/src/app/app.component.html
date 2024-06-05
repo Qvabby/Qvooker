@@ -1,28 +1,9 @@
+<app-navbar (toggleNavbarEvent)="toggleNavbar()"></app-navbar>
 <div class="container">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-    <a class="navbar-brand text-warning" routerLink="/">Qvooker</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end" [ngbCollapse]="!isNavbarCollapsed" id="navbarNavDropdown">
-      <ul class="navbar-nav">
-        <li class="nav-item" *ngIf="!(isLoggedIn | async)">
-          <a class="nav-link btn btn-outline-success my-2 my-sm-0" routerLink="/register">Register</a>
-        </li>
-        <li class="nav-item" *ngIf="!(isLoggedIn | async)">
-          <a class="nav-link btn btn-outline-success my-2 my-sm-0" routerLink="/login">LogIn</a>
-        </li>
-        <li class="nav-item" *ngIf="isLoggedIn | async">
-          <a class="nav-link btn btn-outline-success my-2 my-sm-0" routerLink="/logout">LogOut</a>
-        </li>
-        <li class="nav-item" *ngIf="isLoggedIn | async">
-          <a class="nav-link btn btn-outline-success my-2 my-sm-0" routerLink="/profile">Profile</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+  
 
-  <div class="container mt-5 pt-5">
+
+  <div class="container pt-5 content" [ngClass]="{'content-expanded': !isNavbarExpanded}">
     <router-outlet></router-outlet>
   </div>
 </div>

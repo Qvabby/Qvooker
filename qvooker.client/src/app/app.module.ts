@@ -20,6 +20,8 @@ import { HotelDetailComponent } from './hotel-detail/hotel-detail.component';
 import { AddHotelComponent } from './admin/add-hotel/add-hotel.component';
 import { AddRoomComponent } from './admin/add-room/add-room.component';
 import { AddAdressComponent } from './admin/add-adress/add-adress.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -34,13 +36,15 @@ import { AddAdressComponent } from './admin/add-adress/add-adress.component';
     AddHotelComponent,
     AddRoomComponent,
     AddAdressComponent,
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     ButtonsModule.forRoot(),
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     AccountService,

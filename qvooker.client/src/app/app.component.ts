@@ -1,8 +1,7 @@
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { Injectable } from "@angular/core";
+import { Component, OnInit, Injectable } from '@angular/core';
 import { AccountService } from './account.service';
 
 
@@ -40,14 +39,16 @@ interface Adress {
 export class AppComponent implements OnInit {
   public hotels: Hotel[] = [];
   isLoggedIn: Observable<boolean>;
-  isNavbarCollapsed = true;
+  isNavbarExpanded: boolean = false;
   constructor(private http: HttpClient, private authService: AccountService) {
     this.isLoggedIn = this.authService.isLoggedIn();
   }
   
 
+  
+
   toggleNavbar() {
-    this.isNavbarCollapsed = !this.isNavbarCollapsed;
+    this.isNavbarExpanded = !this.isNavbarExpanded; // Toggle between true and false
   }
 
   ngOnInit() {
