@@ -10,6 +10,7 @@ namespace Qvooker.Server.Models.DTOs
         [Range(1, 5, ErrorMessage = "Hotel Star Rating Value Must be in between of 1 and 5.")]
         public byte Stars { get; set; }
 
+        public List<IFormFile> HotelImages { get; set; }
         public virtual ICollection<AdressDTO> HotelAdresses { get; set; }
 
         //hotel rooms linked to hotel class.

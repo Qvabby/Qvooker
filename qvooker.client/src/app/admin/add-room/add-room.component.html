@@ -17,10 +17,17 @@
           <label for="roomPrice">Price:</label>
           <input class="form-control" type="number" id="roomPrice" [(ngModel)]="room.price" name="roomPrice" required>
         </div>
+
+        <!-- Room Images -->
+        <div class="form-group">
+          <label for="roomImages">Room Images:</label>
+          <input class="form-control" type="file" id="roomImages" (change)="onRoomImagesSelected($event)" name="roomImages" multiple required>
+        </div>
+
         <div class="text-center mt-4">
           <div class="row justify-content-center">
             <div class="col-md-6">
-              <button class="btn btn-primary btn-block" type="submit">Save Address</button>
+              <button class="btn btn-warning btn-block" type="submit">Save</button>
             </div>
             <div class="col-md-6">
               <button class="btn btn-secondary btn-block" type="button" (click)="cancel()">Cancel</button>

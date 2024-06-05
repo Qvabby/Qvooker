@@ -21,6 +21,11 @@ namespace Qvooker.Server.Data
         public DbSet<QvookerUser> qvookerUsers { get; set; }
         //relation of qvookerUser and Hotel (for booking)
         public DbSet<UserRoomBooking> UserRoomBookings { get; set; }
+        // Adding DbSet for HotelImage
+        public DbSet<HotelImage> HotelImages { get; set; }
+
+        // Adding DbSet for RoomImage
+        public DbSet<RoomImage> RoomImages { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

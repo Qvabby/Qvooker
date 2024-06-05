@@ -16,6 +16,12 @@
               <input class="form-control" type="number" id="stars" [(ngModel)]="hotel.stars" name="stars" required>
             </div>
 
+            <!-- Hotel Images -->
+            <div class="form-group">
+              <label for="hotelImages">Hotel Images:</label>
+              <input class="form-control" type="file" id="hotelImages" (change)="onHotelImagesSelected($event)" name="hotelImages" multiple required>
+            </div>
+
             <div class="row">
               <div class="col-md-6">
                 <h4>Addresses</h4>

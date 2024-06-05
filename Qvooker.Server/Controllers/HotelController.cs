@@ -36,8 +36,10 @@ namespace Qvooker.Server.Controllers
         public async Task<ActionResult<Hotel>> GetHotel(int id)
         {
             var hotel = await _context.Hotels
+                .Include(x => x.HotelImages)
                 .Include(x => x.Rooms)
                 .Include(X => X.BookedRooms)
+                .ThenInclude(x => x.Room.RoomImages)
                 .Include(x => x.HotelAdresses)
                 .FirstOrDefaultAsync(x => x.HotelId == id);
 
@@ -83,6 +85,9 @@ namespace Qvooker.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Hotel>> PostHotel(HotelDTO hotel)
         {
+
+
+
             var Hotel = _mapper.Map<Hotel>(hotel);
             _context.Hotels.Add(Hotel);
             await _context.SaveChangesAsync();

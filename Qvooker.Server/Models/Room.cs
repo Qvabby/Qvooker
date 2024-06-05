@@ -21,5 +21,7 @@ namespace Qvooker.Server.Models
 
         // Collection to represent the many-to-many relationship with UserRoomBooking
         public virtual ICollection<UserRoomBooking> BookedByUsers { get; set; } = new List<UserRoomBooking>();
+        // Navigation property to relate Room to its images
+        public virtual ICollection<RoomImage> RoomImages { get; set; }
     }
 }

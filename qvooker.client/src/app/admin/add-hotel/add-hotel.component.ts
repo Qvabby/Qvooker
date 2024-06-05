@@ -15,8 +15,14 @@ export class AddHotelComponent {
     hotelName: '',
     stars: 0,
     hotelAdresses: [],
-    rooms: []
+    rooms: [],
+    hotelImages: []
   };
+
+  hotelImages: File[] = [];
+  roomImagesMap: Map<number, File[]> = new Map<number, File[]>() //Map to store room images by id.
+
+
   showAdressForm = false;
   addedAddress: AddAdressDto[] = [];
 
@@ -28,7 +34,12 @@ export class AddHotelComponent {
   AddHotel() {
     this.hotel.rooms = this.addedRooms;
     this.hotel.hotelAdresses = this.addedAddress;
+    this.hotel.hotelImages = this.hotelImages;
+
+
+
     this.hotelService.addHotel(this.hotel).subscribe(
+
       response => {
         if (response.hotelId != 0) {
           this.router.navigate([`/`]);
@@ -57,6 +68,10 @@ export class AddHotelComponent {
       this.addedAddress.push(adress);
     }
     this.showAdressForm = false; // Hide the adress form
+  }
+
+  onHotelImagesSelected(event: any) {
+    this.hotelImages = Array.from(event.target.files);
   }
 
 }
