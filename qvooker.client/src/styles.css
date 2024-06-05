@@ -1,1 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+  background-color: #f8f9fa;
+}
+
+.navbar {
+  box-shadow: 0 4px 6px -6px #222;
+}
+
+.stars .fa-star, .stars .fa-star-o {
+  color: #ffc107;
+}
+
+.address {
+  font-style: italic;
+  color: #6c757d;
+}
+
+.room-card .card {
+  margin-bottom: 1.5rem;
+}
+
+.hotelTitle {
+  font-family: 'Courier New', Courier, monospace;
+  text-transform: uppercase;
+}
+
+h1.title, h2.title {
+  text-transform: uppercase;
+}

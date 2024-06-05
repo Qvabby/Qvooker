@@ -1,37 +1,24 @@
-<div style="background-color:#f7f7f7;" class="row mt-1 p-2 border border-2 border-light">
+<div class="row mt-1 p-2">
   <div class="col-md-12 card-deck row">
-    <div class="p-2 col-md-4 card border-0 flex-fill" *ngFor="let hotel of hotels ">
-      <div class="card-header bg-light p-3 mt-2 rounded-2 ">
-
-
-        <h4 class="title text-info text-start d-inline">{{ hotel.hotelName }}</h4>
-
-        <div class="col-md-12">
-          <div class="d-inline" *ngFor="let index of [0,1,2,3,4]">
-            <span class="fa fa-star" *ngIf="index < hotel.stars"></span>
-            <span class="fa fa-star-o" *ngIf="index >= hotel.stars"></span>
-          </div>
+    <div class="p-2 col-md-4 card border-0 flex-fill" *ngFor="let hotel of hotels">
+      <div class="card-header p-3 mt-2 rounded-2">
+        <h4 class="hotelTitle title text-info text-start d-inline">{{ hotel.hotelName }}</h4>
+        <div class="stars">
+          <span class="fa fa-star" *ngFor="let index of [0,1,2,3,4]" [class.fa-star-o]="index >= hotel.stars"></span>
         </div>
-
-
       </div>
       <hr />
-
-      <!-- Display other hotel details -->
       <div class="card-body bg-secondary p-2 rounded-2 text-white text-start rounded-bottom-0">
-
-        <p> Room amount: {{hotel.rooms.length}}</p>
-        <strong>Adresses: </strong>
-        <div *ngFor="let adress of hotel.hotelAdresses">
-          <strong>{{adress.country}}/{{adress.city}}/{{adress.street}}</strong>
+        <p>Room amount: {{ hotel.rooms.length }}</p>
+        <strong>Addresses: </strong>
+        <div *ngFor="let address of hotel.hotelAdresses">
+          <strong>{{ address.country }}/{{ address.city }}/{{ address.street }}</strong>
         </div>
         <hr />
-        
       </div>
       <div class="card-footer bg-secondary">
-        <button style="width:100%;" class="align-self-end btn btn-outline-light btn-lg btn-block" (click)="viewHotelDetails(hotel.hotelId)"><strong>View Details</strong></button>
+        <button class="btn btn-outline-light btn-lg btn-block" (click)="viewHotelDetails(hotel.hotelId)"><strong>View Details</strong></button>
       </div>
-
     </div>
   </div>
 </div>

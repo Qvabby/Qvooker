@@ -1,4 +1,4 @@
-﻿:host {
+:host {
     max-width: 1280px;
     padding: 2rem;
     text-align: center;
@@ -20,3 +20,27 @@ th, td {
 table {
     margin: 0 auto;
 }
+
+
+/* Add smooth transitions for the collapse */
+.collapse {
+  transition: height 0.3s ease;
+}
+
+.navbar-brand {
+  font-size: 1.75rem;
+  transition: color 0.3s ease;
+}
+
+  .navbar-brand:hover {
+    color: #ffc107 !important; /* Change to your desired color */
+  }
+
+.nav-link {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+  .nav-link:hover {
+    background-color: #28a745;
+    color: white !important;
+  }

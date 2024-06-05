@@ -1,41 +1,38 @@
 <div class="row">
   <div class="col-md-8">
-    <form class="form " (ngSubmit)="register()" #registerForm="ngForm">
+    <form class="form" (ngSubmit)="register()" #registerForm="ngForm">
       <div class="form-group text-left">
-        <label class="float-left" for="name">Name</label>
+        <label for="name">Name</label>
         <input class="form-control" type="text" id="name" required [(ngModel)]="user.name" name="name" />
       </div>
       <div class="form-group text-left">
-        <label class="float-left" for="lastName">Last Name</label>
+        <label for="lastName">Last Name</label>
         <input class="form-control" type="text" id="lastName" required [(ngModel)]="user.lastName" name="lastName" />
       </div>
       <div class="form-group">
-        <label class="float-left" for="username">Username</label>
+        <label for="username">Username</label>
         <input class="form-control" type="text" id="username" required [(ngModel)]="user.username" name="username" />
       </div>
       <div class="form-group">
-        <label class="float-left" for="email">Email</label>
+        <label for="email">Email</label>
         <input class="form-control" type="email" id="email" required [(ngModel)]="user.email" name="email" />
       </div>
       <div class="form-group">
-        <label class="float-left" for="phoneNumber">Phone Number</label>
+        <label for="phoneNumber">Phone Number</label>
         <input class="form-control" type="text" id="phoneNumber" required [(ngModel)]="user.phoneNumber" name="phoneNumber" />
       </div>
       <div class="form-group">
-        <label class="float-left" for="password">Password</label>
+        <label for="password">Password</label>
         <input class="form-control" type="password" id="password" required [(ngModel)]="user.password" name="password" />
       </div>
       <div class="form-group">
-        <label class="float-left" for="confirmedPassword">confirm Password</label>
+        <label for="confirmedPassword">Confirm Password</label>
         <input class="form-control" type="password" id="confirmedPassword" required [(ngModel)]="user.confirmedPassword" name="confirmedPassword" />
       </div>
       <button class="btn btn-primary" type="submit">Register</button>
     </form>
-
   </div>
   <div class="col-md-4">
     <h1 class="title mt-5">Registration</h1>
   </div>
 </div>
-
-

@@ -48,6 +48,10 @@ export class ProfileComponent implements OnInit {
     this.showBorderEnd = window.innerWidth > 767; // Check window width and update flag
   }
 
+  viewRoom(roomId: number) :void {
+    this._router.navigate([`hotel/${roomId}`])
+  }
+
   getInfo() {
     this._accountService.getUserInfo().subscribe(
       data => {

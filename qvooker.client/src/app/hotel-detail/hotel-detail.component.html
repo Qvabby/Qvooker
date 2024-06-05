@@ -1,12 +1,9 @@
 <div *ngIf="hotel" class="container mt-4">
   <div class="card shadow-sm rounded border-0">
     <div class="card-header bg-light text-dark">
-      <h2 class="text-info">{{ hotel.hotelName }}</h2>
+      <h2 class="hotelTitle text-info">{{ hotel.hotelName }}</h2>
       <div class="stars mb-3">
-        <div class="d-inline" *ngFor="let index of [0,1,2,3,4]">
-          <span class="fa fa-star" *ngIf="index < hotel.stars"></span>
-          <span class="fa fa-star-o" *ngIf="index >= hotel.stars"></span>
-        </div>
+        <span class="fa fa-star" *ngFor="let index of [0,1,2,3,4]" [class.fa-star-o]="index >= hotel.stars"></span>
       </div>
       <p class="address mb-0"><strong>Address:</strong></p>
       <ul class="list-unstyled">

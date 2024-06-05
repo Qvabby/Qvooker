@@ -1,0 +1,64 @@
+.card-header h2 {
+  font-size: 1.75rem;
+}
+
+.card-body h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.card {
+  transition: transform 0.3s ease-in-out;
+}
+
+  .card:hover {
+    transform: scale(1.02);
+  }
+
+@media (max-width: 767px) {
+  .card-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .card-body h3 {
+    font-size: 1.25rem;
+  }
+}
+@media (max-width: 421px) {
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table tr {
+    display: block;
+    margin-bottom: 0.625em;
+  }
+
+  .table td {
+    display: block;
+    text-align: right;
+    font-size: 0.8em;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+    padding-left: 50%;
+  }
+
+    .table td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 0;
+      width: 45%;
+      padding-left: 15px;
+      font-weight: bold;
+      text-align: left;
+    }
+}
