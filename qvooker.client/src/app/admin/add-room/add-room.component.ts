@@ -12,15 +12,15 @@ export class AddRoomComponent {
     name: '',
     description: '',
     price: 0,
-    roomImages: []
+    RoomImages: []
   };
 
-  roomImages: File[] = [];
+  RoomImages: File[] = [];
 
   constructor() { }
 
   addRoom() {
-    this.room.roomImages = this.roomImages;
+    this.room.RoomImages = this.RoomImages;
 
     this.roomAdded.emit(this.room); // Emit the room data to the parent component
     this.resetForm();
@@ -31,7 +31,7 @@ export class AddRoomComponent {
       name: '',
       description: '',
       price: 0,
-      roomImages: []
+      RoomImages: []
     };
   }
   cancel() {
@@ -39,7 +39,7 @@ export class AddRoomComponent {
   }
 
   onRoomImagesSelected(event: any) {
-    this.roomImages = Array.from(event.target.files);
+    this.RoomImages = Array.from(event.target.files);
   }
 
 }

@@ -19,7 +19,7 @@
             <!-- Hotel Images -->
             <div class="form-group">
               <label for="hotelImages">Hotel Images:</label>
-              <input class="form-control" type="file" id="hotelImages" [(ngModel)]="hotel.hotelImages" (change)="onHotelImagesSelected($event)" name="hotelImages" multiple required>
+              <input class="form-control" type="file" id="hotelImages" (change)="onHotelImagesSelected($event)" name="hotelImages" multiple required>
             </div>
 
             <div class="row">

@@ -6,5 +6,5 @@ export interface AddHotelDto {
   stars: number;
   hotelAdresses: AddAdressDto[] | null;
   rooms: AddRoomDto[] | null;
-  hotelImages: File[] | null; 
+  HotelImages: File[] | null; 
 }

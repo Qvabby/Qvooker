@@ -17,10 +17,9 @@ export class AddHotelComponent {
     stars: 0,
     hotelAdresses: [],
     rooms: [],
-    hotelImages: []
+    HotelImages: []
   };
   hotelImages: File[] = [];
-  roomImagesMap: Map<number, File[]> = new Map<number, File[]>() //Map to store room images by id.
 
 
   showAdressForm = false;
@@ -33,10 +32,10 @@ export class AddHotelComponent {
 
   AddHotel() {
     
-
+    this.hotel.HotelImages = this.hotelImages;
     this.hotel.rooms = this.addedRooms;
     this.hotel.hotelAdresses = this.addedAddress;
-    this.hotel.hotelImages = this.hotelImages;
+    
     this.hotel.rooms = this.addedRooms;
 
 
@@ -63,11 +62,11 @@ export class AddHotelComponent {
           for (let i = 0; i < rooms.length; i++) {
             let room = rooms[i];
             for (keyAR in room) {
-              if (keyAR === "roomImages") {
-                let roomImages = room[keyAR];
-                if (roomImages) {
-                  for (let j = 0; j < roomImages.length; j++) {
-                    formData.append(`${k}[${i}].${keyAR}[${j}]`, roomImages[j]);
+              if (keyAR === "RoomImages") {
+                let RoomImages = room[keyAR];
+                if (RoomImages) {
+                  for (let j = 0; j < RoomImages.length; j++) {
+                    formData.append(`${k}[${i}].${keyAR}`, RoomImages[j]);
                   }
                 }
               } else {
@@ -76,12 +75,12 @@ export class AddHotelComponent {
             }
           }
         }
-      } else if (k === "hotelImages") {
+      } else if (k === "HotelImages") {
         if (this.hotel[k]) {
           let hotelImages = this.hotel[k];
           if (hotelImages) {
             for (let i = 0; i < hotelImages.length; i++) {
-              formData.append(`${k}[${i}]`, hotelImages[i]);
+              formData.append(`${k}`, hotelImages[i]);
             }
           }
         }
@@ -90,16 +89,19 @@ export class AddHotelComponent {
       }
     }
 
-    const formDataObject: Record<string, string> = {};
+    console.log("FORMDATA.")
+    console.log([...(formData as any)]);
 
-    formData.forEach((value, key) => {
-      formDataObject[key] = value.toString(); // Convert to string if needed
-    });
+    //const formDataObject: Record<string, string> = {};
 
-    const formDataJSON = JSON.stringify(formDataObject, null, 2);
-    console.log('FormData:', formDataJSON);
+    //formData.forEach((value, key) => {
+    //  formDataObject[key] = value.toString(); // Convert to string if needed
+    //});
 
-    console.log(JSON.stringify(this.hotel))
+    //const formDataJSON = JSON.stringify(formDataObject, null, 2);
+    //console.log('FormData:', formDataJSON);
+
+    //console.log(JSON.stringify(this.hotel))
 
     this.hotelService.addHotel(formData).subscribe(
 
@@ -115,56 +117,7 @@ export class AddHotelComponent {
       }
     )
   }
-
-
-
-    //let formData = new FormData();
-    //formData.append('hotelName', this.hotel.hotelName);
-    //formData.append('stars', this.hotel.stars.toString());
-
-    //if (this.hotelImages) {
-    //  for (var i = 0; i < length; i++) {
-    //    formData.append(`hotelImages${i}`, this.hotelImages[i]);
-    //  }
-    //}
-
-    //for (let k in this.addedRooms) {
-    //  formData.append(`room.${k}`, this.addedRooms[k]);
-    //}
-
-    
-
-    //const formData = new FormData();
-    //formData.append('hotelName', this.hotel.hotelName);
-    //formData.append('stars', this.hotel.stars.toString());
-
-    //// Append hotel images
-    //this.hotel.hotelImages.forEach((image, index) => {
-    //  formData.append(`hotelImages[${index}]`, image);
-    //});
-
-    //// Append addresses
-    //this.hotel.hotelAdresses.forEach((address, index) => {
-    //  formData.append(`hotelAdresses[${index}].street`, address.street);
-    //  formData.append(`hotelAdresses[${index}].city`, address.city);
-    //  formData.append(`hotelAdresses[${index}].country`, address.country);
-    //});
-
-    //// Append rooms
-    //this.hotel.rooms.forEach((room, index) => {
-    //  formData.append(`rooms[${index}].name`, room.name);
-    //  formData.append(`rooms[${index}].description`, room.description);
-    //  formData.append(`rooms[${index}].price`, room.price.toString());
-    //  if (room.roomImages) {
-    //    room.roomImages.forEach((image, imgIndex) => {
-    //      formData.append(`rooms[${index}].roomImages[${imgIndex}]`, image);
-    //    });
-    //  }
-
-    //});
-
-
-    
+  
 
   onRoomAdded(roomEvent: AddRoomDto) {
     const room: AddRoomDto = roomEvent as AddRoomDto;

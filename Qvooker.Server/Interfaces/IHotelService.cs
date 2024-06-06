@@ -11,7 +11,7 @@ namespace Qvooker.Server.Interfaces
         /// </summary>
         /// <param name="hotelDto"></param>
         /// <returns></returns>
-        public Task<ServiceResponse<HotelDTO>> AddHotel([FromForm] HotelDTO hotelDto);
+        public Task<ServiceResponse<Hotel>> AddHotel([FromForm] HotelDTO hotelDto);
         /// <summary>
         /// Getting Specific hotel data out of database.
         /// </summary>

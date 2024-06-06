@@ -92,11 +92,11 @@ namespace Qvooker.Server.Controllers
 
         // POST: api/Hotel
         [Authorize]
-        [HttpPost]
-        public async Task<ActionResult<HotelDTO>> postHotel([FromForm] HotelDTO hotelDto)
+        [HttpPost, DisableRequestSizeLimit]
+        public async Task<ActionResult<Hotel>> postHotel([FromForm] HotelDTO hotelDto)
         {
             //getting Response.
-            ServiceResponse<HotelDTO> response = await _hotelService.AddHotel(hotelDto);
+            ServiceResponse<Hotel> response = await _hotelService.AddHotel(hotelDto);
             //depending on response generating respond.
             if (!response.ServiceSuccess)
             {
@@ -111,28 +111,28 @@ namespace Qvooker.Server.Controllers
                 return BadRequest(response);
             }
         }
-        private async Task<List<string>> SaveImagesAndGetUrls(ICollection<IFormFile> imageFiles)
-        {
-            var imageUrls = new List<string>();
-            foreach (var formFile in imageFiles)
-            {
-                if (formFile.Length > 0)
-                {
-                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + formFile.FileName;
-                    var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "images", uniqueFileName);
+        //private async Task<List<string>> SaveImagesAndGetUrls(ICollection<IFormFile> imageFiles)
+        //{
+        //    var imageUrls = new List<string>();
+        //    foreach (var formFile in imageFiles)
+        //    {
+        //        if (formFile.Length > 0)
+        //        {
+        //            var uniqueFileName = Guid.NewGuid().ToString() + "_" + formFile.FileName;
+        //            var filePath = Path.Combine("../Media", "images", uniqueFileName);
 
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await formFile.CopyToAsync(stream);
-                    }
+        //            using (var stream = new FileStream(filePath, FileMode.Create))
+        //            {
+        //                await formFile.CopyToAsync(stream);
+        //            }
 
-                    // Create URL for the saved image
-                    var imageUrl = Path.Combine("/images", uniqueFileName).Replace("\\", "/");
-                    imageUrls.Add(imageUrl);
-                }
-            }
-            return imageUrls;
-        }
+        //            // Create URL for the saved image
+        //            var imageUrl = Path.Combine("/images", uniqueFileName).Replace("\\", "/");
+        //            imageUrls.Add(imageUrl);
+        //        }
+        //    }
+        //    return imageUrls;
+        //}
 
         // DELETE: api/Hotel/5
         [HttpDelete("{id}")]

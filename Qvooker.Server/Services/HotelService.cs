@@ -20,10 +20,10 @@ namespace Qvooker.Server.Services
             _hostingEnvironment = hostingEnvironment;
         }
 
-        public async Task<ServiceResponse<HotelDTO>> AddHotel([FromForm] HotelDTO hotelDto)
+        public async Task<ServiceResponse<Hotel>> AddHotel([FromForm] HotelDTO hotelDto)
         {
             //creating service's response instance.
-            ServiceResponse<HotelDTO> serviceResponse = new ServiceResponse<HotelDTO>();
+            ServiceResponse<Hotel> serviceResponse = new ServiceResponse<Hotel>();
             try
             {
                 //creating hotel entity
@@ -87,7 +87,7 @@ namespace Qvooker.Server.Services
                 //Configure service Response
                 serviceResponse.ServiceSuccess = true;
                 var gettingHotel = await GetHotel(hotel.HotelId);
-                serviceResponse.Data = _mapper.Map<HotelDTO>(gettingHotel);
+                serviceResponse.Data = gettingHotel.Data;
                 // Return the service Response.
                 return serviceResponse;
             }
@@ -96,7 +96,7 @@ namespace Qvooker.Server.Services
                 //In case there is an error.
                 serviceResponse.errorMessage = e.Message;
                 serviceResponse.ServiceSuccess = false;
-                serviceResponse.Description = e.InnerException.ToString();
+                serviceResponse.Description = e.InnerException?.ToString();
                 return serviceResponse;
             }
 
@@ -126,7 +126,7 @@ namespace Qvooker.Server.Services
             {
                 //in case there is an error.
                 serviceResponse.errorMessage = e.Message;
-                serviceResponse.Description = e.InnerException.ToString();
+                serviceResponse.Description = e.InnerException?.ToString();
                 serviceResponse.ServiceSuccess = false;
                 return serviceResponse;
             }
@@ -145,16 +145,18 @@ namespace Qvooker.Server.Services
             {
                 if (formFile.Length > 0)
                 {
+                    var customImagePath = "..\\Media";
                     //creating Savable Name
                     var uniqueFileName = Guid.NewGuid().ToString() + "_" + formFile.FileName;
-                    var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "images", uniqueFileName);
+                    var filePath = Path.Combine(customImagePath, "images", uniqueFileName);
+                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
                     //saving
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         await formFile.CopyToAsync(stream);
                     }
                     // Create URL for the saved image
-                    var imageUrl = Path.Combine("/images", uniqueFileName).Replace("\\", "/");
+                    var imageUrl = Path.Combine(customImagePath, uniqueFileName).Replace("\\", "/");
                     imageUrls.Add(imageUrl);
                 }
             }
