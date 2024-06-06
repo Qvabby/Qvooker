@@ -20,6 +20,7 @@ namespace Qvooker.Server.Controllers
 
         [Authorize]
         [HttpPost("BookRoom")]
+        [Authorize]
         public async Task<IActionResult> BookRoom(BookRoomDTO model)
         {
             ServiceResponse<UserRoomBooking> serviceResponse = await _bookingService.BookRoomAsync(model);

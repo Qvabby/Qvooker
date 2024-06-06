@@ -21,7 +21,7 @@
         <!-- Room Images -->
         <div class="form-group">
           <label for="roomImages">Room Images:</label>
-          <input class="form-control" type="file" id="roomImages" (change)="onRoomImagesSelected($event)" name="roomImages" multiple required>
+          <input class="form-control" type="file" id="roomImages" [(ngModel)]="room.roomImages" (change)="onRoomImagesSelected($event)" name="roomImages" multiple required>
         </div>
 
         <div class="text-center mt-4">

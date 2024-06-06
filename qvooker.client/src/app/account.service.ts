@@ -45,7 +45,7 @@ export class AccountService {
   //also sending request when logging out.
   logout(): void {
     this.http.post<any>(`${this.apiUrl}/logout`, {}).pipe(
-      take(1)
+
     ).subscribe(
       () => {
         localStorage.removeItem('token');

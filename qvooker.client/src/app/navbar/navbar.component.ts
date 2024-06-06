@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { Observable } from 'rxjs';
 import { AccountService } from '../account.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -25,8 +26,13 @@ export class NavbarComponent {
   isCollapsed: boolean = false;
   isLoggedIn: Observable<boolean>;
   @Output() toggleNavbarEvent = new EventEmitter<void>();
-  constructor(private authService: AccountService) {
+  constructor(private authService: AccountService, private router: Router) {
     this.isLoggedIn = this.authService.isLoggedIn();
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login'])
   }
 
   toggleNavbar() {

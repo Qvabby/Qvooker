@@ -29,11 +29,23 @@ export class HotelService {
     );
   }
 
+
   addHotel(hotel: AddHotelDto): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, hotel).pipe(
-      map(response => {
-        return response;
-      })
-    )
+    return this.http.post<any>(this.apiUrl, hotel);
   }
+
+  //addHotel(hotel: AddHotelDto): Observable<any> {
+  //  console.log("GETS IN ADDHOTEL SERVICE CLIENT")
+  //  return this.http.post(`${this.apiUrl}`, JSON.stringify(hotel)).pipe(
+
+  //    map(response => {
+
+  //      console.log("GETS IN MAP METHOD IN ADDHOTEL SERVICE CLIENT")
+
+  //      return response;
+
+  //    })
+
+  //  )
+  //}
 }

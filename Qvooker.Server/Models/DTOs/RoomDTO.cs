@@ -7,6 +7,6 @@ namespace Qvooker.Server.Models.DTOs
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal price { get; set; }
-        public List<IFormFile> RoomImages { get; set; }
+        public ICollection<IFormFile> RoomImages { get; set; }
     }
 }

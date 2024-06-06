@@ -1,4 +1,4 @@
-<div *ngIf="hotel" class="container mt-4">
+<<div *ngIf="hotel" class="container mt-4">
   <div class="card shadow-sm rounded border-0">
     <div class="card-header bg-light text-dark">
       <h2 class="hotelTitle text-info">{{ hotel.hotelName }}</h2>
@@ -20,10 +20,24 @@
           <div class="card-body bg-light">
             <p>{{ room.description }}</p>
             <p class="price mb-0">Price: ${{ room.price }}</p>
-            <button (click)="bookRoom(room.roomId)" class="btn btn-outline-secondary btn-lg mt-3">Book Now</button>
+            <button (click)="selectRoom(room)" class="btn btn-outline-secondary btn-lg mt-3">Book Now</button>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
+<!-- Booking Modal -->
+<div *ngIf="selectedRoom" class="booking-modal">
+  <div class="booking-content">
+    <h3>Book Room: {{ selectedRoom.name }}</h3>
+    <label>Start Date:</label>
+    <input type="date" [(ngModel)]="startDate">
+    <label>End Date:</label>
+    <input type="date" [(ngModel)]="endDate">
+    <p *ngIf="totalCost !== null">Total Cost: ${{ totalCost }}</p>
+    <button (click)="calculateTotalCost()">Calculate Cost</button>
+    <button (click)="confirmBooking()">Confirm Booking</button>
+    <button (click)="cancelBooking()">Cancel</button>
   </div>
 </div>

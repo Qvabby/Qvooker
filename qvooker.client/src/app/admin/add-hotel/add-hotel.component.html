@@ -6,7 +6,7 @@
           <h2>Add Hotel</h2>
         </div>
         <div class="card-body">
-          <form (ngSubmit)="AddHotel()">
+          <form  (ngSubmit)="AddHotel()">
             <div class="form-group">
               <label for="hotelName">Hotel Name:</label>
               <input class="form-control" type="text" id="hotelName" [(ngModel)]="hotel.hotelName" name="hotelName" required>
@@ -19,7 +19,7 @@
             <!-- Hotel Images -->
             <div class="form-group">
               <label for="hotelImages">Hotel Images:</label>
-              <input class="form-control" type="file" id="hotelImages" (change)="onHotelImagesSelected($event)" name="hotelImages" multiple required>
+              <input class="form-control" type="file" id="hotelImages" [(ngModel)]="hotel.hotelImages" (change)="onHotelImagesSelected($event)" name="hotelImages" multiple required>
             </div>
 
             <div class="row">
