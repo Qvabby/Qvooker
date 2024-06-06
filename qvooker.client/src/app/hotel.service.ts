@@ -30,8 +30,8 @@ export class HotelService {
   }
 
 
-  addHotel(hotel: AddHotelDto): Observable<any> {
-    return this.http.post<any>(this.apiUrl, hotel);
+  addHotel(hotel: FormData): Observable<any> {
+    return this.http.post(this.apiUrl, hotel);
   }
 
   //addHotel(hotel: AddHotelDto): Observable<any> {

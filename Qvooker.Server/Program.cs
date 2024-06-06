@@ -162,6 +162,7 @@ namespace Qvooker.Server
             #region DI for Application Services
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddScoped<IBookingService, BookingService>();
+            builder.Services.AddScoped<IHotelService, HotelService>();
             #endregion
 
 

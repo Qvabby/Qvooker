@@ -39,6 +39,85 @@ export class AddHotelComponent {
     this.hotel.hotelImages = this.hotelImages;
     this.hotel.rooms = this.addedRooms;
 
+
+
+    let formData = new FormData();
+
+    let k: keyof AddHotelDto;
+    for (k in this.hotel) {
+      if (k === "hotelAdresses") {
+        if (this.hotel[k]) {
+          let hotelAdresses = this.hotel[k]!;
+          let keyHA: keyof AddAdressDto;
+          for (let i = 0; i < hotelAdresses.length; i++) {
+            let hotelAddress = hotelAdresses[i];
+            for (keyHA in hotelAddress) {
+              formData.append(`${k}[${i}].${keyHA}`, hotelAddress[keyHA]);
+            }
+          }
+        }
+      } else if (k === "rooms") {
+        if (this.hotel[k]) {
+          let rooms = this.hotel[k]!;
+          let keyAR: keyof AddRoomDto;
+          for (let i = 0; i < rooms.length; i++) {
+            let room = rooms[i];
+            for (keyAR in room) {
+              if (keyAR === "roomImages") {
+                let roomImages = room[keyAR];
+                if (roomImages) {
+                  for (let j = 0; j < roomImages.length; j++) {
+                    formData.append(`${k}[${i}].${keyAR}[${j}]`, roomImages[j]);
+                  }
+                }
+              } else {
+                formData.append(`${k}[${i}].${keyAR}`, room[keyAR].toString());
+              }
+            }
+          }
+        }
+      } else if (k === "hotelImages") {
+        if (this.hotel[k]) {
+          let hotelImages = this.hotel[k];
+          if (hotelImages) {
+            for (let i = 0; i < hotelImages.length; i++) {
+              formData.append(`${k}[${i}]`, hotelImages[i]);
+            }
+          }
+        }
+      } else {
+        formData.append(k, this.hotel[k].toString());
+      }
+    }
+
+    const formDataObject: Record<string, string> = {};
+
+    formData.forEach((value, key) => {
+      formDataObject[key] = value.toString(); // Convert to string if needed
+    });
+
+    const formDataJSON = JSON.stringify(formDataObject, null, 2);
+    console.log('FormData:', formDataJSON);
+
+    console.log(JSON.stringify(this.hotel))
+
+    this.hotelService.addHotel(formData).subscribe(
+
+      response => {
+        console.log("GETS IN ADDHOTEL SUCCESS CLIENT")
+        if (response.hotelId != 0) {
+          this.router.navigate([`/`]);
+        }
+      },
+      error => {
+        console.log("GETS IN ERROR OF ADDHOTEL")
+        console.error('Error adding hotel:', error);
+      }
+    )
+  }
+
+
+
     //let formData = new FormData();
     //formData.append('hotelName', this.hotel.hotelName);
     //formData.append('stars', this.hotel.stars.toString());
@@ -85,31 +164,7 @@ export class AddHotelComponent {
     //});
 
 
-    //const formDataObject: Record<string, string> = {};
-
-    //formData.forEach((value, key) => {
-    //  formDataObject[key] = value.toString(); // Convert to string if needed
-    //});
-
-    //const formDataJSON = JSON.stringify(formDataObject, null, 2);
-    //console.log('FormData:', formDataJSON);
-
-    console.log(JSON.stringify(this.hotel))
-
-    this.hotelService.addHotel(this.hotel).subscribe(
-
-      response => {
-        console.log("GETS IN ADDHOTEL SUCCESS CLIENT")
-        if (response.hotelId != 0) {
-          this.router.navigate([`/`]);
-        }
-      },
-      error => {
-        console.log("GETS IN ERROR OF ADDHOTEL")
-        console.error('Error adding hotel:', error);
-      }
-    )
-  }
+    
 
   onRoomAdded(roomEvent: AddRoomDto) {
     const room: AddRoomDto = roomEvent as AddRoomDto;

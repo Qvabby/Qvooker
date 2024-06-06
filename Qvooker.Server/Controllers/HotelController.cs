@@ -11,6 +11,7 @@ using Qvooker.Server.Models;
 using Qvooker.Server.Models.DTOs;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authorization;
+using Qvooker.Server.Interfaces;
 
 namespace Qvooker.Server.Controllers
 {
@@ -21,11 +22,13 @@ namespace Qvooker.Server.Controllers
         private readonly QvookerDbContext _context;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _hostingEnvironment;
-        public HotelController(QvookerDbContext context, IMapper mapper, IWebHostEnvironment hostingEnvironment)
+        private readonly IHotelService _hotelService;
+        public HotelController(QvookerDbContext context, IMapper mapper, IWebHostEnvironment hostingEnvironment, IHotelService hotelService)
         {
             _context = context;
             _mapper = mapper;
             _hostingEnvironment = hostingEnvironment;
+            _hotelService = hotelService;
         }
 
         // GET: api/Hotel
@@ -39,20 +42,21 @@ namespace Qvooker.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Hotel>> GetHotel(int id)
         {
-            var hotel = await _context.Hotels
-                .Include(x => x.HotelImages)
-                .Include(x => x.Rooms)
-                .Include(X => X.BookedRooms)
-                .ThenInclude(x => x.Room.RoomImages)
-                .Include(x => x.HotelAdresses)
-                .FirstOrDefaultAsync(x => x.HotelId == id);
-
-            if (hotel == null)
+            //getting Response.
+            ServiceResponse<Hotel> response = await _hotelService.GetHotel(id);
+            //depending on response generating respond.
+            if (!response.ServiceSuccess)
             {
                 return NotFound();
             }
-
-            return Ok(hotel);
+            if (response.ServiceSuccess)
+            {
+                return Ok(response.Data);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         // PUT: api/Hotel/5
@@ -85,93 +89,27 @@ namespace Qvooker.Server.Controllers
             return NoContent();
         }
 
+
         // POST: api/Hotel
-        [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Hotel>> PostHotel([FromForm] HotelDTO hotelDto)
+        [HttpPost]
+        public async Task<ActionResult<HotelDTO>> postHotel([FromForm] HotelDTO hotelDto)
         {
-
-            try
+            //getting Response.
+            ServiceResponse<HotelDTO> response = await _hotelService.AddHotel(hotelDto);
+            //depending on response generating respond.
+            if (!response.ServiceSuccess)
             {
-                //creating hotel entity
-                var hotel = new Hotel
-                {
-                    HotelName = hotelDto.HotelName,
-                    Stars = hotelDto.Stars,
-                    HotelAdresses = hotelDto.HotelAdresses?.Select(x => _mapper.Map<Adress>(x)).ToList(),
-                    Rooms = new List<Room>(), // Initialize room collection
-                    HotelImages = new List<HotelImage>() // Initialize hotel image collection
-                };
-                // Save hotel entity to database
-                _context.Hotels.Add(hotel);
-                await _context.SaveChangesAsync();
-
-                // Save hotel images to folder and create URLs
-                var hotelImageUrls = await SaveImagesAndGetUrls(hotelDto.HotelImages);
-
-                // Create HotelImage entities and associate them with the hotel
-                foreach (var imageUrl in hotelImageUrls)
-                {
-                    var hotelImage = new HotelImage
-                    {
-                        ImageUrl = imageUrl,
-                        HotelId = hotel.HotelId
-                    };
-                    _context.HotelImages.Add(hotelImage);
-                }
-
-                // Save room entities with images
-                foreach (var roomDto in hotelDto.Rooms)
-                {
-                    var room = new Room
-                    {
-                        Name = roomDto.Name,
-                        Description = roomDto.Description,
-                        price = roomDto.price,
-                        HotelId = hotel.HotelId
-                    };
-
-                    hotel.Rooms.Add(room);
-                    _context.Rooms.Add(room);
-                    await _context.SaveChangesAsync();
-
-                    var roomImageUrls = await SaveImagesAndGetUrls(roomDto.RoomImages);
-
-                    // Create RoomImage entities and associate them with the room
-                    foreach (var imageUrl in roomImageUrls)
-                    {
-                        var roomImage = new RoomImage
-                        {
-                            ImageUrl = imageUrl,
-                            RoomId = room.RoomId
-                        };
-                        _context.RoomImages.Add(roomImage);
-                    }
-                }
-
-                // Save changes to the database
-                await _context.SaveChangesAsync();
-
-                // Return the created hotel entity
-                return CreatedAtAction("GetHotel", new { id = hotel.HotelId }, hotel);
-
-
-                //var Hotel = _mapper.Map<Hotel>(hotel);
-                //_context.Hotels.Add(Hotel);
-                //await _context.SaveChangesAsync();
-
-                //return CreatedAtAction("GetHotel", new { id = Hotel.HotelId }, hotel);
-
-
-
+                return NotFound(response);
             }
-            catch (Exception ex)
+            if (response.ServiceSuccess)
             {
-
-                throw;
+                return Ok(response.Data);
             }
-
-            
+            else
+            {
+                return BadRequest(response);
+            }
         }
         private async Task<List<string>> SaveImagesAndGetUrls(ICollection<IFormFile> imageFiles)
         {
