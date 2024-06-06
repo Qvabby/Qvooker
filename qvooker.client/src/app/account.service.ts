@@ -10,12 +10,14 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AccountService {
+  //API's address.
   private apiUrl = 'https://localhost:7071';
+  //is user logged in or no.
   private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
+  //jwt token's localstorage key.
   private tokenKey = 'token';
+  //constructor and dependency injection.
   constructor(private http: HttpClient, private router: Router) { this.loggedIn = new BehaviorSubject<boolean>(this.hasToken())}
-
-
   //checking if there is token in localstorage.
   private hasToken(): boolean {
     return !!localStorage.getItem(this.tokenKey)
@@ -24,12 +26,10 @@ export class AccountService {
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
-
   //check if user is logged in.
   isLoggedIn(): Observable<boolean> {
     return this.loggedIn.asObservable();
   }
-
   //getting token out of login HTTP POST (log in.).
   login(credentials: { username: string; password: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
@@ -45,9 +45,9 @@ export class AccountService {
   //also sending request when logging out.
   logout(): void {
     this.http.post<any>(`${this.apiUrl}/logout`, {}).pipe(
-
     ).subscribe(
       () => {
+        //remove token.
         localStorage.removeItem('token');
         this.loggedIn.next(false);
         this.router.navigate(['/login']);
@@ -58,18 +58,7 @@ export class AccountService {
       }
     );
   }
-  //sending register HTTP POST
-  //register(user: UserRegisterDTO): Observable<any> {
-  //  return this.http.post<any>(`${this.apiUrl}/register`, user).pipe(
-  //    map(response => {
-  //      if (response.serviceSuccess) {
-  //        this.router.navigate(['/'])
-  //      } else if (!response.serviceSuccess) {
-  //        alert(`$There were error registering. - ${response.errorMessage}`)
-  //      }
-  //    })
-  //  )
-  //}
+  //register post
   register(user: UserRegisterDTO): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/register`, user).pipe(
       map(response => {
@@ -82,8 +71,6 @@ export class AccountService {
       })
     );
   }
-
-  
   //get information out of Jwt token.
   getUserInfo(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/Account/info`).pipe(
@@ -93,6 +80,4 @@ export class AccountService {
       })
     )
   }
-
-
 }

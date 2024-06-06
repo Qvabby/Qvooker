@@ -65,7 +65,6 @@ namespace Qvooker.Server.Controllers
 
         [HttpPost]
         [Route("/logout")]
-        [Authorize]
         public async Task<ActionResult<ServiceResponse<string>>> LogoutUser()
         {
             var serviceResponse = await _accountService.Logout();

@@ -23,18 +23,22 @@ import { Router } from '@angular/router';
   ]
 })
 export class NavbarComponent {
+  //if navbar is collapsed or no.
   isCollapsed: boolean = false;
+  //if user is logged in or no.
   isLoggedIn: Observable<boolean>;
+  //to toggle.
   @Output() toggleNavbarEvent = new EventEmitter<void>();
+  //constructor and dependency injection
   constructor(private authService: AccountService, private router: Router) {
     this.isLoggedIn = this.authService.isLoggedIn();
   }
-
+  //logging out.
   logout() {
     this.authService.logout();
     this.router.navigate(['/login'])
   }
-
+  //toggling the navbar.
   toggleNavbar() {
     this.toggleNavbarEvent.emit();
     this.isCollapsed = !this.isCollapsed;

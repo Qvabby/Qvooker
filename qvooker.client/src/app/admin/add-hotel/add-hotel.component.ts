@@ -12,6 +12,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrl: './add-hotel.component.css'
 })
 export class AddHotelComponent {
+  //hotelDto instance.
   hotel: AddHotelDto = {
     hotelName: '',
     stars: 0,
@@ -19,29 +20,26 @@ export class AddHotelComponent {
     rooms: [],
     HotelImages: []
   };
+  //for images seperately.
   hotelImages: File[] = [];
-
-
+  //know when to show address form.
   showAdressForm = false;
   addedAddress: AddAdressDto[] = [];
-
+  //know when to show rooms form.
   showRoomForm = false;
   addedRooms: AddRoomDto[] = [];
-
+  //constructor dependency injection.
   constructor(private hotelService: HotelService, private router: Router) { }
-
+  //Add Hotel Method.
   AddHotel() {
-    
+    //getting files and address/rooms to dto.
     this.hotel.HotelImages = this.hotelImages;
     this.hotel.rooms = this.addedRooms;
     this.hotel.hotelAdresses = this.addedAddress;
-    
     this.hotel.rooms = this.addedRooms;
-
-
-
+    //creating FormData to make a request.
     let formData = new FormData();
-
+    //configuring formData the way API wants.
     let k: keyof AddHotelDto;
     for (k in this.hotel) {
       if (k === "hotelAdresses") {
@@ -88,56 +86,44 @@ export class AddHotelComponent {
         formData.append(k, this.hotel[k].toString());
       }
     }
-
+    //check Formdata.
     console.log("FORMDATA.")
     console.log([...(formData as any)]);
-
-    //const formDataObject: Record<string, string> = {};
-
-    //formData.forEach((value, key) => {
-    //  formDataObject[key] = value.toString(); // Convert to string if needed
-    //});
-
-    //const formDataJSON = JSON.stringify(formDataObject, null, 2);
-    //console.log('FormData:', formDataJSON);
-
-    //console.log(JSON.stringify(this.hotel))
-
+    //send request.
     this.hotelService.addHotel(formData).subscribe(
-
+      //getting response.
       response => {
-        console.log("GETS IN ADDHOTEL SUCCESS CLIENT")
+        //adds
         if (response.hotelId != 0) {
           this.router.navigate([`/`]);
         }
       },
       error => {
+        //if response had error.
         console.log("GETS IN ERROR OF ADDHOTEL")
         console.error('Error adding hotel:', error);
       }
     )
   }
-  
-
+  //what happens if Room was added (change) event.
   onRoomAdded(roomEvent: AddRoomDto) {
     const room: AddRoomDto = roomEvent as AddRoomDto;
-    console.log(room);
+    //console.log(room);
     if (room != undefined) {
       this.addedRooms.push(room);
     }
     this.showRoomForm = false; // Hide the room form
   }
-
+  //what happens if Address was added (change) event.
   onAdressAdded(adressEvent: AddAdressDto) {
-
     const adress: AddAdressDto = adressEvent as AddAdressDto;
-    console.log(adress);
+    //console.log(adress);
     if (adress != undefined) {
       this.addedAddress.push(adress);
     }
     this.showAdressForm = false; // Hide the adress form
   }
-
+  //getting images.
   onHotelImagesSelected(event: any) {
     this.hotelImages = Array.from(event.target.files);
   }

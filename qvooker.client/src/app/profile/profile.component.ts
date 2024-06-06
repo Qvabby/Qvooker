@@ -3,7 +3,7 @@ import { AccountService } from '../account.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
-
+//Needed DTOs
 interface UserInfo {
   userId: string;
   name?: string;
@@ -13,13 +13,11 @@ interface UserInfo {
   phoneNumber?: string;
   bookedRooms: Room[];
 }
-
 interface HotelAddress {
   country: string;
   city: string;
   street: string;
 }
-
 interface Room {
   id: number;
   hotelId: number;
@@ -35,23 +33,25 @@ interface Room {
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {
-
+  //UserInfo
   userInfo: UserInfo | null = null;
   showBorderEnd = true; // Flag to control whether to show border-end
-
+  //constructor and dependency injection.
   constructor(private _accountService: AccountService, private _router: Router) { }
+  //getting info.
   ngOnInit(): void {
     this.getInfo()
   }
+  //for Responsivnes.
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.showBorderEnd = window.innerWidth > 767; // Check window width and update flag
   }
-
+  //View Booked Rooms.
   viewRoom(roomId: number) :void {
     this._router.navigate([`hotel/${roomId}`])
   }
-
+  //getting Info.
   getInfo() {
     this._accountService.getUserInfo().subscribe(
       data => {
@@ -78,6 +78,5 @@ export class ProfileComponent implements OnInit {
         console.log("userinfo: ", this.userInfo);
       }
     );
-
   }
 }

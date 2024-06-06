@@ -1,8 +1,5 @@
 <app-navbar (toggleNavbarEvent)="toggleNavbar()"></app-navbar>
 <div class="container">
-  
-
-
   <div class="container pt-5 content" [ngClass]="{'content-expanded': !isNavbarExpanded}">
     <router-outlet></router-outlet>
   </div>

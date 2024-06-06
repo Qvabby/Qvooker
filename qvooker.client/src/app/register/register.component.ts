@@ -8,8 +8,8 @@ import { UserRegisterDTO } from '../user-register-dto.model';
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
-
 export class RegisterComponent {
+  //form
   user: UserRegisterDTO = {
     name: '',
     lastName: '',
@@ -19,10 +19,11 @@ export class RegisterComponent {
     password: '',
     confirmedPassword: ''
   };
-
+  //constructor and dependency injection
   constructor(private accountService: AccountService, private router: Router) { }
-
+  //register
   register() {
+    //calling service method.
     this.accountService.register(this.user).subscribe(
       response => {
         if (response.serviceSuccess) {

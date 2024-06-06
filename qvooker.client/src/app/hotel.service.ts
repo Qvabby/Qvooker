@@ -8,10 +8,11 @@ import { Observable, map, tap } from 'rxjs';
   providedIn: 'root'
 })
 export class HotelService {
+  //API Address.
   private apiUrl = 'https://localhost:7071/Hotel';
+  //Constructor and dependency injection
   constructor(private http: HttpClient, private router: Router) { }
-
-
+  //Get All Hotels GET
   getHotels(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}`).pipe(
       tap(response => {
@@ -20,6 +21,7 @@ export class HotelService {
       })
     );
   }
+  //Get Specific Hotel GET
   getHotel(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`,).pipe(
       tap(response => {
@@ -28,24 +30,8 @@ export class HotelService {
       })
     );
   }
-
-
+  //Add Hotel Post
   addHotel(hotel: FormData): Observable<any> {
     return this.http.post(this.apiUrl, hotel);
   }
-
-  //addHotel(hotel: AddHotelDto): Observable<any> {
-  //  console.log("GETS IN ADDHOTEL SERVICE CLIENT")
-  //  return this.http.post(`${this.apiUrl}`, JSON.stringify(hotel)).pipe(
-
-  //    map(response => {
-
-  //      console.log("GETS IN MAP METHOD IN ADDHOTEL SERVICE CLIENT")
-
-  //      return response;
-
-  //    })
-
-  //  )
-  //}
 }

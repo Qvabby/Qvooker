@@ -5,8 +5,9 @@ import { AccountService } from './account.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  //constructor and dependency injection
   constructor(private authService: AccountService) { }
-
+  //intereceptor
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.authService.getToken();
     if (token) {
@@ -21,4 +22,4 @@ export class AuthInterceptor implements HttpInterceptor {
 }
 
 //HTTP interceptor is used to automatically add the authorization token to outgoing HTTP requests.
-//It is useful because we use JWT token.
+//It is useful because we use JWT token. (and need to know if user is logged in or not on api side.)

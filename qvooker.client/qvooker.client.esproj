@@ -8,6 +8,7 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\qvooker.client\</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="src\assets\QvookerMedia\" />
     <Folder Include="src\NewFolder\" />
   </ItemGroup>
 </Project>

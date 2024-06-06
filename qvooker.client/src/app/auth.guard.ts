@@ -8,8 +8,9 @@ import { map, take, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
+  //constructor and dependency injection.
   constructor(private authService: AccountService, private router: Router) { }
-
+  //Auth Guard.
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
