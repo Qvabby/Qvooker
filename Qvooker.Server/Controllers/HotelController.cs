@@ -35,7 +35,8 @@ namespace Qvooker.Server.Controllers
         [HttpGet]
         public async Task<IEnumerable<Hotel>> GetHotels()
         {
-            return await _context.Hotels.Include(x => x.HotelAdresses).Include(x => x.Rooms).Include(x => x.HotelImages).ToListAsync();
+            IEnumerable<Hotel> hotels = await _context.Hotels.Include(x => x.HotelAdresses).Include(x => x.Rooms).Include(x => x.HotelImages).ToListAsync();
+            return hotels;
         }
 
         // GET: api/Hotel/5

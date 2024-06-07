@@ -4,61 +4,55 @@
       <h2 class="mb-0">Your Profile | {{ userInfo.username }}</h2>
     </div>
     <div class="card-body">
-      <div class="row">
-        <!-- Personal Information -->
-        <div class="col-md-8">
-          <h3 class="text-primary">Personal Information</h3>
-          <table class="table table-hover mt-3">
-            <tbody>
-              <tr>
-                <th>Name:</th>
-                <td>{{ userInfo.name }}</td>
-              </tr>
-              <tr>
-                <th>Last Name:</th>
-                <td>{{ userInfo.lastName }}</td>
-              </tr>
-              <tr>
-                <th>Username:</th>
-                <td>{{ userInfo.username }}</td>
-              </tr>
-              <tr>
-                <th>Email:</th>
-                <td>{{ userInfo.email }}</td>
-              </tr>
-              <tr>
-                <th>Phone Number:</th>
-                <td>{{ userInfo.phoneNumber }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <!-- Booked Rooms -->
-        <div class="col-md-4">
-          <h3 class="text-primary">Booked Rooms</h3>
-          <div *ngIf="userInfo.bookedRooms.length; else noRooms">
-            <div *ngFor="let room of userInfo.bookedRooms" class="card mt-3">
-              <div class="card-header bg-secondary text-white">
-                <h4 class="mb-0">{{ room.name }}</h4>
-              </div>
-              <div class="card-body bg-light">
-                <p>{{ room.description }}</p>
-                <p><strong>Price:</strong> ${{ room.price }}</p>
-                <p><strong>Address:</strong></p>
-                <ul class="list-unstyled">
-                  <li *ngFor="let address of room.hotelAddresses">
-                    {{ address.street }}, {{ address.city }}, {{ address.country }}
-                  </li>
-                </ul>
-                <button class="btn btn-warning mt-2" (click)="viewRoom(room.hotelId)">View Room</button>
-              </div>
-            </div>
+      <!-- Personal Information -->
+      <div class="mb-4">
+        <h3 class="text-primary mb-3">Personal Information</h3>
+        <div class="row">
+          <div class="col-md-6">
+            <strong>Name:</strong>
+            <p>{{ userInfo.name }}</p>
           </div>
-          <ng-template #noRooms>
-            <p class="mt-3">No booked rooms available.</p>
-          </ng-template>
+          <div class="col-md-6">
+            <strong>Last Name:</strong>
+            <p>{{ userInfo.lastName }}</p>
+          </div>
+          <div class="col-md-6">
+            <strong>Username:</strong>
+            <p>{{ userInfo.username }}</p>
+          </div>
+          <div class="col-md-6">
+            <strong>Email:</strong>
+            <p>{{ userInfo.email }}</p>
+          </div>
+          <div class="col-md-6">
+            <strong>Phone Number:</strong>
+            <p>{{ userInfo.phoneNumber }}</p>
+          </div>
         </div>
       </div>
+      <!-- Booked Rooms -->
+      <div *ngIf="userInfo.bookedRooms.length; else noRooms">
+        <h3 class="text-primary">Booked Rooms</h3>
+        <div *ngFor="let room of userInfo.bookedRooms" class="card mb-4">
+          <div class="card-header bg-secondary text-white">
+            <h4 class="mb-0">{{ room.name }}</h4>
+          </div>
+          <div class="card-body bg-light">
+            <p>{{ room.description }}</p>
+            <p><strong>Price:</strong> ${{ room.price }}</p>
+            <p><strong>Address:</strong></p>
+            <ul class="list-unstyled">
+              <li *ngFor="let address of room.hotelAddresses">
+                {{ address.street }}, {{ address.city }}, {{ address.country }}
+              </li>
+            </ul>
+            <button class="btn btn-warning" (click)="viewRoom(room.hotelId)">View Room</button>
+          </div>
+        </div>
+      </div>
+      <ng-template #noRooms>
+        <p class="mt-3">No booked rooms available.</p>
+      </ng-template>
     </div>
   </div>
 </div>

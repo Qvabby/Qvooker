@@ -138,13 +138,14 @@ namespace Qvooker.Server.Services
         /// <returns></returns>
         private async Task<List<string>> SaveImagesAndGetUrls(ICollection<IFormFile> imageFiles)
         {
+            //(../../assets/Media/images/)
             //Creating Collection of Images Urls
             var imageUrls = new List<string>();
             foreach (var formFile in imageFiles)
             {
                 if (formFile.Length > 0)
                 {
-                    var customImagePath = "..\\Media";
+                    var customImagePath = "..\\qvooker.client\\src\\assets\\media";
                     //creating Savable Name
                     var uniqueFileName = Guid.NewGuid().ToString() + "_" + formFile.FileName;
                     var filePath = Path.Combine(customImagePath, "images", uniqueFileName);
@@ -155,7 +156,7 @@ namespace Qvooker.Server.Services
                         await formFile.CopyToAsync(stream);
                     }
                     // Create URL for the saved image
-                    var imageUrl = Path.Combine(customImagePath, "images", uniqueFileName).Replace("\\", "/");
+                    var imageUrl = Path.Combine("..\\..\\assets\\Media\\", "images", uniqueFileName).Replace("\\", "/");
                     imageUrls.Add(imageUrl);
                 }
             }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HotelService } from '../hotel.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -15,13 +15,20 @@ export interface Room {
   description: string;
   price: number;
 }
-
+export interface Image {
+  hotelImageId: number;
+  hotelId: number;
+  imageUrl: string;
+  hotel: string;
+}
 export interface Hotel {
   hotelId: number;
   hotelName: string;
   stars: number;
+  hotelImages: Image[];
   hotelAdresses: Address[];
   rooms: Room[];
+  activeIndex: number; // activeIndex property
 }
 
 @Component({
@@ -36,6 +43,9 @@ export class HotelListingComponent implements OnInit {
   //filtering
   filteredHotels: Hotel[] = [];
   searchForm: FormGroup;
+  //carousel
+  @Input() items: { imageUrl: string }[] = [];
+  activeIndex = 0;
   //constructor and dependency injection
   constructor(private hotelService: HotelService, private router: Router, private fb: FormBuilder) {
     this.searchForm = this.fb.group({
@@ -62,7 +72,7 @@ export class HotelListingComponent implements OnInit {
     this.hotelService.getHotels().subscribe(
       data => {
         console.log("GetHotels GET: " + data)
-        this.hotels = data;
+        this.hotels = data.map((hotel: any) => ({ ...hotel, activeIndex: 0 }));
         this.filteredHotels = this.hotels;
         console.log("if its mapped right: "+ this.hotels)
       }
@@ -85,5 +95,13 @@ export class HotelListingComponent implements OnInit {
   //when you want to see hotel's detailed information.
   viewHotelDetails(hotelId: number) {
     this.router.navigate(['/hotel', hotelId]);
+  }
+  //carouselMethods
+  nextSlide(hotel: Hotel) {
+    hotel.activeIndex = (hotel.activeIndex + 1) % hotel.hotelImages.length;
+  }
+
+  prevSlide(hotel: Hotel) {
+    hotel.activeIndex = (hotel.activeIndex - 1 + hotel.hotelImages.length) % hotel.hotelImages.length;
   }
 }
