@@ -1,7 +1,7 @@
 ﻿namespace Qvooker.Server
 {
     /// <summary>
-    /// This generic class is specially made for qvooker's service responses.
+    /// This generic class is specially made for qvooker's services' response.
     /// </summary>
     public class ServiceResponse<T>
     {

@@ -101,7 +101,6 @@ namespace Qvooker.Server.Services
             }
 
         }
-
         public async Task<ServiceResponse<Hotel>> GetHotel(int id)
         {
             //creating service response's instance.
@@ -156,7 +155,7 @@ namespace Qvooker.Server.Services
                         await formFile.CopyToAsync(stream);
                     }
                     // Create URL for the saved image
-                    var imageUrl = Path.Combine(customImagePath, uniqueFileName).Replace("\\", "/");
+                    var imageUrl = Path.Combine(customImagePath, "images", uniqueFileName).Replace("\\", "/");
                     imageUrls.Add(imageUrl);
                 }
             }

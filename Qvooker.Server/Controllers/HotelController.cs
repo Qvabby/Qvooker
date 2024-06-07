@@ -35,7 +35,7 @@ namespace Qvooker.Server.Controllers
         [HttpGet]
         public async Task<IEnumerable<Hotel>> GetHotels()
         {
-            return await _context.Hotels.Include(x => x.HotelAdresses).Include(x => x.Rooms).ToListAsync();
+            return await _context.Hotels.Include(x => x.HotelAdresses).Include(x => x.Rooms).Include(x => x.HotelImages).ToListAsync();
         }
 
         // GET: api/Hotel/5
@@ -89,7 +89,6 @@ namespace Qvooker.Server.Controllers
             return NoContent();
         }
 
-
         // POST: api/Hotel
         [Authorize]
         [HttpPost, DisableRequestSizeLimit]
@@ -111,28 +110,6 @@ namespace Qvooker.Server.Controllers
                 return BadRequest(response);
             }
         }
-        //private async Task<List<string>> SaveImagesAndGetUrls(ICollection<IFormFile> imageFiles)
-        //{
-        //    var imageUrls = new List<string>();
-        //    foreach (var formFile in imageFiles)
-        //    {
-        //        if (formFile.Length > 0)
-        //        {
-        //            var uniqueFileName = Guid.NewGuid().ToString() + "_" + formFile.FileName;
-        //            var filePath = Path.Combine("../Media", "images", uniqueFileName);
-
-        //            using (var stream = new FileStream(filePath, FileMode.Create))
-        //            {
-        //                await formFile.CopyToAsync(stream);
-        //            }
-
-        //            // Create URL for the saved image
-        //            var imageUrl = Path.Combine("/images", uniqueFileName).Replace("\\", "/");
-        //            imageUrls.Add(imageUrl);
-        //        }
-        //    }
-        //    return imageUrls;
-        //}
 
         // DELETE: api/Hotel/5
         [HttpDelete("{id}")]
