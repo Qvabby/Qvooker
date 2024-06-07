@@ -7,3 +7,18 @@
   flex-wrap: wrap;
   align-items: stretch;
 }
+
+.gamodzraveba:hover{
+    transform:scale(1.1);
+    transition:0.2s;
+    z-index:100;
+}
+.gamodzraveba{
+    transition:0.2s;
+    z-index:0;
+}
+.textNoSelction {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

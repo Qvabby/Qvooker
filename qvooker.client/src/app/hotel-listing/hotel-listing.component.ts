@@ -46,6 +46,9 @@ export class HotelListingComponent implements OnInit {
   //carousel
   @Input() items: { imageUrl: string }[] = [];
   activeIndex = 0;
+  //big carousel
+  carouselImages: string[] = [];
+  carouselHotelIds: number[] = [];
   //constructor and dependency injection
   constructor(private hotelService: HotelService, private router: Router, private fb: FormBuilder) {
     this.searchForm = this.fb.group({
@@ -62,7 +65,7 @@ export class HotelListingComponent implements OnInit {
   ngOnInit(): void {
     this.getHotels();
     this.filteredHotels = this.hotels; // Initially show all hotels
-    console.log("fetch: "+ this.filteredHotels)
+    console.log("fetch: " + this.filteredHotels)
     this.searchForm.valueChanges.subscribe(() => {
       this.filterHotels();
     });
@@ -74,7 +77,18 @@ export class HotelListingComponent implements OnInit {
         console.log("GetHotels GET: " + data)
         this.hotels = data.map((hotel: any) => ({ ...hotel, activeIndex: 0 }));
         this.filteredHotels = this.hotels;
-        console.log("if its mapped right: "+ this.hotels)
+        console.log("if its mapped right: " + this.hotels)
+      }
+    );
+  }
+  //for big carousel fetch
+  getHotelsForCarousel() {
+    this.hotelService.getHotels().subscribe(
+      data => {
+        console.log("GetHotels GET: " + data);
+        const hotelsForCarousel = data
+          .filter((hotel: Hotel) => hotel.stars > 5); // Filter out hotels with less than 5 stars
+        this.populateCarouselData(hotelsForCarousel); // Call function to populate carousel data
       }
     );
   }
@@ -103,5 +117,19 @@ export class HotelListingComponent implements OnInit {
 
   prevSlide(hotel: Hotel) {
     hotel.activeIndex = (hotel.activeIndex - 1 + hotel.hotelImages.length) % hotel.hotelImages.length;
+  }
+  //big Carousel
+  // Function to populate carousel data
+  populateCarouselData(hotelsForCarousel: Hotel[]) {
+    this.carouselImages = []; // Clear existing carousel images
+    this.carouselHotelIds = []; // Clear existing carousel hotel IDs
+
+    hotelsForCarousel.forEach((hotel: Hotel) => {
+      // Add images and hotel IDs of hotels above 5 stars to carousel data
+      hotel.hotelImages.forEach((image: Image) => {
+        this.carouselImages.push(image.imageUrl);
+        this.carouselHotelIds.push(hotel.hotelId);
+      });
+    });
   }
 }

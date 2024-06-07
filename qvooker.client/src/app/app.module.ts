@@ -22,6 +22,7 @@ import { AddRoomComponent } from './admin/add-room/add-room.component';
 import { AddAdressComponent } from './admin/add-adress/add-adress.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CarouselComponent } from './carousel/carousel.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AddRoomComponent,
     AddAdressComponent,
     NavbarComponent,
+    CarouselComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,3 +1,8 @@
+@font-face {
+  font-family: MainFont;
+  src: url("/src/assets/Fonts/Oswald-VariableFont_wght.ttf");
+}
+
 body {
   background-color: #f8f9fa;
 }
@@ -20,8 +25,7 @@ body {
 }
 
 .hotelTitle {
-  font-family: 'Courier New', Courier, monospace;
-  text-transform: uppercase;
+  font-family:MainFont ;
 }
 
 h1.title, h2.title {

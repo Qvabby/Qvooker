@@ -1,3 +1,5 @@
+
+<app-carousel [images]="carouselImages" [hotelIds]="carouselHotelIds"></app-carousel>
 <div class="container mt-2">
   <div [formGroup]="searchForm">
     <div class="row mb-3 bg-light p-2 rounded-4 border border-secondary border-1" [formGroup]="searchForm">
@@ -21,9 +23,9 @@
 
 
   <div class="card-deck row p-2">
-    <div class="col-md-4 card border-0 flex-fill" *ngFor="let hotel of filteredHotels">
-      <div class="card-header border border-secondary border-1 border-bottom-0 p-3 mt-2 rounded-2">
-        <h4 class="hotelTitle title text-info text-start d-inline">{{ hotel.hotelName }}</h4>
+    <div class="gamodzraveba col-md-3 card border-0 flex-fill mt-3" *ngFor="let hotel of filteredHotels">
+      <div class="card-header border border-secondary border-1 border-bottom-0 border-start-0 border-end-0 p-3 mt-2 rounded-2">
+        <h4 class="textNoSelction hotelTitle title text-info text-start d-inline">{{ hotel.hotelName }}</h4>
         <div class="stars">
           <span class="fa fa-star" *ngFor="let index of [0,1,2,3,4]" [class.fa-star-o]="index >= hotel.stars"></span>
         </div>
@@ -45,10 +47,10 @@
         </a>
       </div>
       <div class="card-body bg-secondary p-2 rounded-2 text-white text-start rounded-bottom-0">
-        <p>Room amount: {{ hotel.rooms.length }}</p>
-        <strong>Addresses: </strong>
+        <p class="textNoSelction">Room amount: {{ hotel.rooms.length }}</p>
+        <strong class="textNoSelction">Addresses: </strong>
         <div *ngFor="let address of hotel.hotelAdresses">
-          <strong>{{ address.country }}/{{ address.city }}/{{ address.street }}</strong>
+          <strong class="textNoSelction">{{ address.country }}/{{ address.city }}/{{ address.street }}</strong>
         </div>
         <hr />
       </div>
