@@ -23,8 +23,8 @@
 
 
   <div class="card-deck row p-2">
-    <div class="gamodzraveba col-md-3 card border-0 flex-fill mt-3" *ngFor="let hotel of filteredHotels">
-      <div class="card-header border border-secondary border-1 border-bottom-0 border-start-0 border-end-0 p-3 mt-2 rounded-2">
+    <div class="p-2 blackcolor gamodzraveba col-md-3 card border-0 flex-fill mt-4" *ngFor="let hotel of filteredHotels">
+      <div class="card-header darkthemecard border border-secondary border-1 border-bottom-0 border-start-0 border-end-0 p-3 mt-2 rounded-4">
         <h4 class="textNoSelction hotelTitle title text-info text-start d-inline">{{ hotel.hotelName }}</h4>
         <div class="stars">
           <span class="fa fa-star" *ngFor="let index of [0,1,2,3,4]" [class.fa-star-o]="index >= hotel.stars"></span>
@@ -54,7 +54,7 @@
         </div>
         <hr />
       </div>
-      <div class="card-footer bg-info">
+      <div class="card-footer bg-secondary">
         <button class="btn btn-outline-light btn-lg btn-block" (click)="viewHotelDetails(hotel.hotelId)"><strong>View Details</strong></button>
       </div>
     </div>

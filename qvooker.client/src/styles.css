@@ -1,10 +1,10 @@
 @font-face {
   font-family: MainFont;
-  src: url("/src/assets/Fonts/Oswald-VariableFont_wght.ttf");
+  src: url("/assets/Media/Fonts/Oswald-VariableFont_wght.ttf");
 }
 
 body {
-  background-color: #f8f9fa;
+  background-color: #1c1c1c!important;
 }
 
 .navbar {

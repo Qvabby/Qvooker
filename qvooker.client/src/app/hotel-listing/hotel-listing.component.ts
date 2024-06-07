@@ -59,6 +59,7 @@ export class HotelListingComponent implements OnInit {
       rooms: [0, [Validators.min(0)]], // Minimum value of 0
     });
     this.getHotels();
+    this.getHotelsForCarousel()
     this.filteredHotels = this.hotels; // Initially show all hotels
   }
   //getting hotels
@@ -69,6 +70,7 @@ export class HotelListingComponent implements OnInit {
     this.searchForm.valueChanges.subscribe(() => {
       this.filterHotels();
     });
+    this.getHotelsForCarousel();
   }
   //fetch
   getHotels() {
@@ -86,8 +88,8 @@ export class HotelListingComponent implements OnInit {
     this.hotelService.getHotels().subscribe(
       data => {
         console.log("GetHotels GET: " + data);
-        const hotelsForCarousel = data
-          .filter((hotel: Hotel) => hotel.stars > 5); // Filter out hotels with less than 5 stars
+        const hotelsForCarousel = data.filter((hotel: Hotel) => hotel.stars === 5);
+
         this.populateCarouselData(hotelsForCarousel); // Call function to populate carousel data
       }
     );

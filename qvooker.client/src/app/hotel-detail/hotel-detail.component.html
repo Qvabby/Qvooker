@@ -20,6 +20,11 @@
           <div class="card-body">
             <p>{{ room.description }}</p>
             <p class="price mb-2">Price: ${{ room.price }}</p>
+
+
+            <app-carousel [images]="carouselImages" [hotelIds]="carouselRoomIds"></app-carousel>
+
+
             <button (click)="selectRoom(room)" class="btn btn-outline-info btn-lg">Book Now</button>
           </div>
         </div>
@@ -27,6 +32,8 @@
     </div>
   </div>
 </div>
+
+
 
 <!-- Booking Modal -->
 <div *ngIf="selectedRoom" class="modal fade show d-block" tabindex="-1" role="dialog">
@@ -45,7 +52,7 @@
           </button>
         </div>
 
-        
+
 
 
       </div>

@@ -112,9 +112,30 @@ namespace Qvooker.Server.Services
                 .Include(x => x.HotelImages)
                 .Include(x => x.Rooms)
                 .Include(X => X.BookedRooms)
-                .ThenInclude(x => x.Room.RoomImages)
                 .Include(x => x.HotelAdresses)
                 .FirstOrDefaultAsync(x => x.HotelId == id);
+
+                var hotelwithroomimages = await _context.Hotels
+                    .Include(x => x.Rooms) // Include rooms for the hotel
+                    .ThenInclude(x => x.RoomImages) // Include room images for each room
+                    .FirstOrDefaultAsync(x => x.HotelId == id); // Get the hotel by its ID
+
+                foreach (var room in hotel.Rooms)
+                {
+
+                    foreach (var room2 in hotelwithroomimages.Rooms)
+                    {
+                        if (room.RoomId == room2.RoomId)
+                        {
+                            room.RoomImages = room2.RoomImages;
+                        }
+                    }
+                    
+                }
+
+
+                //var roomImages = await _context.RoomImages.FirstOrDefaultAsync(x=> x.RoomId == hotel.Rooms.first);
+
                 //Configuring Service Response.
                 serviceResponse.Data = hotel;
                 serviceResponse.ServiceSuccess = true;

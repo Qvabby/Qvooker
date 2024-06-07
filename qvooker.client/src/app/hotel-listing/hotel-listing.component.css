@@ -22,3 +22,9 @@
   -ms-user-select: none;
   user-select: none;
 }
+.darkthemecard{
+    background-color:#5a5a5a;
+}
+.blackcolor {
+  background-color: #1c1c1c !important;
+}

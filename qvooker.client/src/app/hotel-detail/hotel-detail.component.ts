@@ -28,6 +28,9 @@ export class HotelDetailComponent implements OnInit {
   modalStyle = {};
   originalWidth: string = '';
   originalHeight: string = '';
+  //carrousel
+  carouselRoomIds: number[] = [];
+  carouselImages: string[] = [];
   //constructor and a dependency injection.
   constructor(private route: ActivatedRoute, private hotelService: HotelService, private bookingService: BookingService, private accountService: AccountService, private router: Router, private renderer: Renderer2) { }
   ngOnInit(): void {
@@ -35,6 +38,7 @@ export class HotelDetailComponent implements OnInit {
       this.hotelId = +params['hotelId']
       this.getHotelDetails();
       this.getUserInfo(); // Fetch user info when component initializes
+      
       //console.log(`Check Hotel instance: ${this.hotel}`)
     })
   }
@@ -56,8 +60,7 @@ export class HotelDetailComponent implements OnInit {
       data => {
         this.hotel = data;
         console.log(`Hotel details:`, this.hotel);
-        return data;
-
+        this.populateCarouselData(this.hotel.rooms);
       },
       error => {
         console.error('Error fetching hotel details:', error);
@@ -162,6 +165,20 @@ export class HotelDetailComponent implements OnInit {
       this.renderer.setStyle(this.modalElement, 'left', `${newX}px`);
       this.renderer.setStyle(this.modalElement, 'top', `${newY}px`);
     }
+  }
+  //carousel
+  populateCarouselData(roomsForCarousel: any[]) {
+    this.carouselImages = []; // Clear existing carousel images
+    this.carouselRoomIds = []; // Clear existing carousel room IDs
+
+    roomsForCarousel.forEach((room: any) => { // Iterate over each room
+      room.roomImages.forEach((image: any) => { // Iterate over the images of the room
+        this.carouselImages.push(image.imageUrl); // Push the image URL to the carousel images array
+        this.carouselRoomIds.push(room.roomId); // Push the room ID to the carousel room IDs array
+      });
+    });
+    console.log(this.carouselImages);
+    console.log(this.carouselRoomIds);
   }
 
 }
