@@ -1,11 +1,13 @@
 <div class="carousel-container rounded-2">
   <div class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
-      <div *ngFor="let image of images; let i = index" class="carousel-item" [ngClass]="{'active': i === activeIndex}">
-        <a [routerLink]="['/hotel', hotelIds[i]]">
-          <img class="d-block w-100" [src]="image" alt="Slide {{i}}" style="max-height: 450px; object-fit: cover;">
-        </a>
-      </div>
+      <ng-container *ngFor="let roomImagesMap of roomAndImagesMap; let i = index">
+        <div *ngIf="i === activeIndex" class="carousel-item" [ngClass]="{'active': i === activeIndex}">
+          <div *ngFor="let image of roomImagesMap[roomIds[i]]; let j = index" class="carousel-inner">
+            <img *ngIf="j === 0" class="d-block w-100" [src]="image" alt="Slide {{j}}" style="max-height: 450px; object-fit: cover;">
+          </div>
+        </div>
+      </ng-container>
     </div>
     <a class="carousel-control-prev" role="button" (click)="prevSlide()">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>

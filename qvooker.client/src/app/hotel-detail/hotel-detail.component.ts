@@ -4,6 +4,11 @@ import { HotelService } from '../hotel.service';
 import { BookRoomDTO, BookingService } from '../booking.service';
 import { AccountService } from '../account.service';
 
+
+interface RoomAndImagesMap {
+  [roomId: number]: string[]; // Map each room ID to an array of image URLs
+}
+
 @Component({
   selector: 'app-hotel-detail',
   templateUrl: './hotel-detail.component.html',
@@ -29,8 +34,9 @@ export class HotelDetailComponent implements OnInit {
   originalWidth: string = '';
   originalHeight: string = '';
   //carrousel
-  carouselRoomIds: number[] = [];
-  carouselImages: string[] = [];
+  //carouselRoomIds: number[] = [];
+  //carouselImages: string[] = [];
+  //yourRoomAndImagesMap: RoomAndImagesMap[] = [];
   //constructor and a dependency injection.
   constructor(private route: ActivatedRoute, private hotelService: HotelService, private bookingService: BookingService, private accountService: AccountService, private router: Router, private renderer: Renderer2) { }
   ngOnInit(): void {
@@ -38,7 +44,7 @@ export class HotelDetailComponent implements OnInit {
       this.hotelId = +params['hotelId']
       this.getHotelDetails();
       this.getUserInfo(); // Fetch user info when component initializes
-      
+
       //console.log(`Check Hotel instance: ${this.hotel}`)
     })
   }
@@ -60,6 +66,9 @@ export class HotelDetailComponent implements OnInit {
       data => {
         this.hotel = data;
         console.log(`Hotel details:`, this.hotel);
+
+
+
         this.populateCarouselData(this.hotel.rooms);
       },
       error => {
@@ -152,7 +161,9 @@ export class HotelDetailComponent implements OnInit {
 
   @HostListener('document:mouseup')
   onMouseUp() {
-    this.renderer.removeClass(this.modalElement, 'dragging'); // Remove class when drag stops
+    if (this.modalElement) {
+      this.renderer.removeClass(this.modalElement, 'dragging'); // Remove class when drag stops
+    }
     this.stopDrag();
   }
 
@@ -180,5 +191,6 @@ export class HotelDetailComponent implements OnInit {
     console.log(this.carouselImages);
     console.log(this.carouselRoomIds);
   }
+
 
 }

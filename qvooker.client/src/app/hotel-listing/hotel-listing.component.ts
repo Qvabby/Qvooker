@@ -44,7 +44,7 @@ export class HotelListingComponent implements OnInit {
   filteredHotels: Hotel[] = [];
   searchForm: FormGroup;
   //carousel
-  @Input() items: { imageUrl: string }[] = [];
+  //@Input() items: { imageUrl: string }[] = [];
   activeIndex = 0;
   //big carousel
   carouselImages: string[] = [];
