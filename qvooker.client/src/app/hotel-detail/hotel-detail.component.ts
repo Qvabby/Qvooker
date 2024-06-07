@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, Renderer2 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HotelService } from '../hotel.service';
 import { BookRoomDTO, BookingService } from '../booking.service';
@@ -18,8 +18,18 @@ export class HotelDetailComponent implements OnInit {
   endDate: string = '';
   totalCost: number | null = null;
   userId: string = '';
+  //dragging
+  isDragging = false;
+  startX = 0;
+  startY = 0;
+  initialX = 0;
+  initialY = 0;
+  modalElement: HTMLElement | null = null;
+  modalStyle = {};
+  originalWidth: string = '';
+  originalHeight: string = '';
   //constructor and a dependency injection.
-  constructor(private route: ActivatedRoute, private hotelService: HotelService, private bookingService: BookingService, private accountService: AccountService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private hotelService: HotelService, private bookingService: BookingService, private accountService: AccountService, private router: Router, private renderer: Renderer2) { }
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.hotelId = +params['hotelId']
@@ -100,4 +110,58 @@ export class HotelDetailComponent implements OnInit {
     this.endDate = '';
     this.totalCost = null;
   }
+
+  startDrag(event: MouseEvent) {
+    this.isDragging = true;
+    this.startX = event.clientX;
+    this.startY = event.clientY;
+    this.modalElement = (event.target as HTMLElement).closest('.modal-dialog');
+    if (this.modalElement) {
+      const rect = this.modalElement.getBoundingClientRect();
+      this.initialX = rect.left;
+      this.initialY = rect.top;
+      this.originalWidth = `${rect.width}px`;
+      this.originalHeight = `${rect.height}px`;
+      this.renderer.setStyle(this.modalElement, 'position', 'absolute');
+      this.renderer.setStyle(this.modalElement, 'z-index', '1050'); // Ensure it stays above other elements
+      this.renderer.setStyle(this.modalElement, 'width', this.originalWidth);
+      this.renderer.setStyle(this.modalElement, 'height', this.originalHeight);
+
+      const dx = event.clientX - this.startX;
+      const dy = event.clientY - this.startY;
+      const newX = this.initialX + dx;
+      const newY = this.initialY + dy - 22;
+      this.renderer.setStyle(this.modalElement, 'left', `${newX}px`);
+      this.renderer.setStyle(this.modalElement, 'top', `${newY}px`);
+
+      this.renderer.addClass(this.modalElement, 'dragging'); // Add class for dragging cursor
+    }
+  }
+
+  stopDrag() {
+    this.isDragging = false;
+  }
+
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove(event: MouseEvent) {
+    this.drag(event);
+  }
+
+  @HostListener('document:mouseup')
+  onMouseUp() {
+    this.renderer.removeClass(this.modalElement, 'dragging'); // Remove class when drag stops
+    this.stopDrag();
+  }
+
+  drag(event: MouseEvent) {
+    if (this.isDragging && this.modalElement) {
+      const dx = event.clientX - this.startX;
+      const dy = event.clientY - this.startY;
+      const newX = this.initialX + dx;
+      const newY = this.initialY + dy - 22;
+      this.renderer.setStyle(this.modalElement, 'left', `${newX}px`);
+      this.renderer.setStyle(this.modalElement, 'top', `${newY}px`);
+    }
+  }
+
 }

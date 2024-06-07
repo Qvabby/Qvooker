@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { RegisterComponent } from './register/register.component';
@@ -45,6 +45,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ButtonsModule.forRoot(),
     FormsModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     AccountService,

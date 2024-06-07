@@ -1,8 +1,8 @@
-<div *ngIf="hotel" class="container mt-4">
+<div *ngIf="hotel" class="container mt-5">
   <div class="card shadow-sm rounded border-0">
-    <div class="card-header bg-light text-dark">
-      <h2 class="hotelTitle text-info">{{ hotel.hotelName }}</h2>
-      <div class="stars mb-3">
+    <div class="card-header bg-info text-white">
+      <h2 class="hotelTitle">{{ hotel.hotelName }}</h2>
+      <div class="stars mb-2">
         <span class="fa fa-star" *ngFor="let index of [0,1,2,3,4]" [class.fa-star-o]="index >= hotel.stars"></span>
       </div>
       <p class="address mb-0"><strong>Address:</strong></p>
@@ -17,27 +17,54 @@
           <div class="card-header bg-secondary text-white">
             <h4>{{ room.name }}</h4>
           </div>
-          <div class="card-body bg-light">
+          <div class="card-body">
             <p>{{ room.description }}</p>
-            <p class="price mb-0">Price: ${{ room.price }}</p>
-            <button (click)="selectRoom(room)" class="btn btn-outline-secondary btn-lg mt-3">Book Now</button>
+            <p class="price mb-2">Price: ${{ room.price }}</p>
+            <button (click)="selectRoom(room)" class="btn btn-outline-info btn-lg">Book Now</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
 <!-- Booking Modal -->
-<div *ngIf="selectedRoom" class="booking-modal">
-  <div class="booking-content">
-    <h3>Book Room: {{ selectedRoom.name }}</h3>
-    <label>Start Date:</label>
-    <input type="date" [(ngModel)]="startDate">
-    <label>End Date:</label>
-    <input type="date" [(ngModel)]="endDate">
-    <p *ngIf="totalCost !== null">Total Cost: ${{ totalCost }}</p>
-    <button (click)="calculateTotalCost()">Calculate Cost</button>
-    <button (click)="confirmBooking()">Confirm Booking</button>
-    <button (click)="cancelBooking()">Cancel</button>
+<div *ngIf="selectedRoom" class="modal fade show d-block" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" [ngStyle]="modalStyle">
+      <div class="modal-header row" (mousedown)="startDrag($event)" (document:mousemove)="drag($event)" (document:mouseup)="stopDrag()">
+        <div class="col-md-4">
+          <h5 class="modal-title prevent-select ">{{ selectedRoom.name }}</h5>
+        </div>
+        <div class="col-md-4">
+          <p class="prevent-select ">(you can drag me.)</p>
+        </div>
+        <div class="col-md-4">
+          <button class="btn btn-danger close" style="float:right;" type="button" aria-label="Close" (click)="cancelBooking()">
+            <span class="prevent-select " aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        
+
+
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Start Date:</label>
+          <input type="date" class="form-control" [(ngModel)]="startDate">
+        </div>
+        <div class="form-group">
+          <label>End Date:</label>
+          <input type="date" class="form-control" [(ngModel)]="endDate">
+        </div>
+        <p *ngIf="totalCost !== null">Total Cost: ${{ totalCost }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" (click)="calculateTotalCost()">Calculate Cost</button>
+        <button type="button" class="btn btn-primary" (click)="confirmBooking()">Confirm Booking</button>
+        <button type="button" class="btn btn-secondary" (click)="cancelBooking()">Cancel</button>
+      </div>
+    </div>
   </div>
 </div>
