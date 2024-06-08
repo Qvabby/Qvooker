@@ -13,6 +13,7 @@ body {
 
 .stars .fa-star, .stars .fa-star-o {
   color: #ffc107;
+  font-size:22px;
 }
 
 .address {

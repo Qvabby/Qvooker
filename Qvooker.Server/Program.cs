@@ -31,7 +31,7 @@ namespace Qvooker.Server
 
             var builder = WebApplication.CreateBuilder(args);
 
-            #region SQLConnection
+            #region ---------------------SQLConnection----------------------------
             //Connecting API to Database.
             builder.Services.AddDbContext<QvookerDbContext>(opt =>
                 opt.UseSqlServer(builder.Configuration.GetConnectionString("DevelopmentConnection")));
@@ -119,6 +119,8 @@ namespace Qvooker.Server
             builder.Services.AddControllers();
 
             builder.Services.AddEndpointsApiExplorer();
+
+            #region -------------------Bearer Token-----------------------
             builder.Services.AddSwaggerGen(opt =>
             {
 
@@ -146,7 +148,7 @@ namespace Qvooker.Server
                     }
                 });
             });
-
+            #endregion
 
             #region ------------------------Imapper------------------------------
 
@@ -175,13 +177,14 @@ namespace Qvooker.Server
             builder.Services.AddControllersWithViews().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
+            #region -------------CrossOrigin ----------------
             //http / https stuff.
             builder.Services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().
                  AllowAnyHeader());
             });
-
+            #endregion
 
             var app = builder.Build();
 
@@ -210,6 +213,7 @@ namespace Qvooker.Server
 
             app.MapFallbackToFile("/index.html");
 
+            #region ----------------configuring who is admin.---------------
             //seeding initial data into our system.
             using (var scope = app.Services.CreateScope())
             {
@@ -260,7 +264,7 @@ namespace Qvooker.Server
                     }
                 }
             }
-
+            #endregion
 
             app.Run();
         }

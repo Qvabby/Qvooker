@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row text-light">
   <div class="col-md-8">
     <form class="form" (ngSubmit)="register()" #registerForm="ngForm">
       <div class="form-group text-left">
@@ -29,7 +29,7 @@
         <label for="confirmedPassword">Confirm Password</label>
         <input class="form-control" type="password" id="confirmedPassword" required [(ngModel)]="user.confirmedPassword" name="confirmedPassword" />
       </div>
-      <button class="btn btn-primary" type="submit">Register</button>
+      <button style="float:left" class="mt-2 btn btn-lg btn-primary" type="submit">Register</button>
     </form>
   </div>
   <div class="col-md-4">

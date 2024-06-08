@@ -1,29 +1,29 @@
-<div *ngIf="hotel" class="container mt-5">
+<div *ngIf="hotel">
   <div class="card shadow-sm rounded border-0">
-    <div class="card-header bg-info text-white">
+    <div class="card-header bg-info text-white row text-start">
       <h2 class="hotelTitle">{{ hotel.hotelName }}</h2>
       <div class="stars mb-2">
         <span class="fa fa-star" *ngFor="let index of [0,1,2,3,4]" [class.fa-star-o]="index >= hotel.stars"></span>
       </div>
       <p class="address mb-0"><strong>Address:</strong></p>
       <ul class="list-unstyled">
-        <li *ngFor="let address of hotel.hotelAdresses">{{ address.street }}, {{ address.city }}, {{ address.country }}</li>
+        <li *ngFor="let address of hotel.hotelAdresses"><strong style="font-size:22px">{{ address.street }}, {{ address.city }}, {{ address.country }}</strong></li>
       </ul>
     </div>
-    <div class="card-body">
-      <h3 class="mb-4">Rooms</h3>
-      <div *ngFor="let room of hotel.rooms" class="room-card mb-3">
+    <div class="card-body row bg-light">
+      <h3 class="mb-3 p-1">Rooms</h3>
+      <div *ngFor="let room of hotel.rooms" class="col-md-6 room-card mb-3">
         <div class="card shadow-sm rounded border-0">
           <div class="card-header bg-secondary text-white">
             <h4>{{ room.name }}</h4>
           </div>
-          <div class="card-body">
+          <div class="card-body bg-light">
             <p>{{ room.description }}</p>
             <p class="price mb-2">Price: ${{ room.price }}</p>
 
             <app-carousel [images]="roomImagesMap[room.roomId]" [hotelIds]="[hotel.hotelId]"></app-carousel>
 
-            <button (click)="selectRoom(room)" class="btn btn-outline-info btn-lg">Book Now</button>
+            <button style="float:left" (click)="selectRoom(room)" class=" mt-2 btn btn-outline-info btn-lg">Book Now</button>
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
 <div *ngIf="selectedRoom" class="modal fade show d-block" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content" [ngStyle]="modalStyle">
-      <div class="modal-header row" (mousedown)="startDrag($event)" (document:mousemove)="drag($event)" (document:mouseup)="stopDrag()">
+      <div class="modal-header border-bottom-0 row" (mousedown)="startDrag($event)" (document:mousemove)="drag($event)" (document:mouseup)="stopDrag()">
         <div class="col-md-4">
           <h5 class="modal-title prevent-select ">{{ selectedRoom.name }}</h5>
         </div>

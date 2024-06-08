@@ -28,3 +28,7 @@
 .blackcolor {
   background-color: #1c1c1c !important;
 }
+.bottomdownzero {
+  border-top-left-radius:20px;
+  border-top-right-radius:20px;
+}
