@@ -21,10 +21,7 @@
             <p>{{ room.description }}</p>
             <p class="price mb-2">Price: ${{ room.price }}</p>
 
-
-            <!--<app-carousel [roomAndImagesMap]="yourRoomAndImagesMap"></app-carousel>-->
-
-
+            <app-carousel [images]="roomImagesMap[room.roomId]" [hotelIds]="[hotel.hotelId]"></app-carousel>
 
             <button (click)="selectRoom(room)" class="btn btn-outline-info btn-lg">Book Now</button>
           </div>
